@@ -80,8 +80,8 @@ public class Oh_Heaven extends CardGame {
 	private final Location textLocation = new Location(350, 450);
 	private final int thinkingTime = 2000;
 	private Hand[] hands;
-	private Location hideLocation = new Location(-500, - 500);
-	private Location trumpsActorLocation = new Location(50, 50);
+	private final Location hideLocation = new Location(-500, - 500);
+	private final Location trumpsActorLocation = new Location(50, 50);
 	private boolean enforceRules=false;
 
 	public void setStatus(String string) { setStatusText(string); }
