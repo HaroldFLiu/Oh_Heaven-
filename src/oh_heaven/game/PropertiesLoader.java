@@ -16,7 +16,7 @@ public class PropertiesLoader {
                 // load a properties file
                 prop.load(input);
 
-                propertiesFile = DEFAULT_DIRECTORY_PATH + prop.getProperty("current_test");
+                propertiesFile = DEFAULT_DIRECTORY_PATH + prop.getProperty("current_mode");
                 System.out.println(propertiesFile);
             } catch (IOException ex) {
                 ex.printStackTrace();
