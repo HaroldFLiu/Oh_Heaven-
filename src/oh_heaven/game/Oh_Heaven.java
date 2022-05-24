@@ -12,18 +12,6 @@ import java.util.stream.Collectors;
 @SuppressWarnings("serial")
 public class Oh_Heaven extends CardGame {
 
-	public enum Suit
-	{
-		SPADES, HEARTS, DIAMONDS, CLUBS
-	}
-
-	public enum Rank
-	{
-		// Reverse order of rank importance (see rankGreater() below)
-		// Order of cards is tied to card images
-		ACE, KING, QUEEN, JACK, TEN, NINE, EIGHT, SEVEN, SIX, FIVE, FOUR, THREE, TWO
-	}
-
 	final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
 
 	private static int seed = 30006;
