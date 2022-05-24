@@ -310,7 +310,7 @@ public class Oh_Heaven extends CardGame {
 		// property load
 		this.setNbRounds(Integer.parseInt(properties.getProperty("rounds")));
 		this.setNbStartCards(Integer.parseInt(properties.getProperty("nbStartCards")));
-		this.setSeed(Integer.parseInt(properties.getProperty("seed")));
+		setSeed(Integer.parseInt(properties.getProperty("seed")));
 		this.setEnforceRules(Boolean.parseBoolean(properties.getProperty("enforceRules")));
 
 		setTitle("Oh_Heaven (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
