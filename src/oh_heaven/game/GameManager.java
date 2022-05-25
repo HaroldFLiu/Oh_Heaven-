@@ -58,7 +58,6 @@ public class GameManager extends CardGame
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     private final int thinkingTime = 2000;
     private Hand[] hands;
-    private final Location hideLocation = new Location(-500, - 500);
     private boolean enforceRules=false;
 
     public void setStatus(String string) { setStatusText(string); }
@@ -234,8 +233,7 @@ public class GameManager extends CardGame
                 // End Follow
             }
             delay(600);
-            trick.setView(this, new RowLayout(hideLocation, 0));
-            trick.draw();
+            graphics.hideTrick(this, trick);
             nextPlayer = winner;
             setStatusText("Player " + nextPlayer + " wins trick.");
             tricks[nextPlayer]++;

@@ -37,6 +37,8 @@ public class GraphicsManager
 
     private final Location textLocation = new Location(350, 450);
 
+    private final Location hideLocation = new Location(-500, - 500);
+
     private GraphicsManager() {}
 
     public static GraphicsManager getInstance()
@@ -96,5 +98,11 @@ public class GraphicsManager
     public void addGameOverText(CardGame game)
     {
         game.addActor(new Actor("sprites/gameover.gif"), textLocation);
+    }
+
+    public void hideTrick(CardGame game, Hand trick)
+    {
+        trick.setView(game, new RowLayout(hideLocation, 0));
+        trick.draw();
     }
 }
