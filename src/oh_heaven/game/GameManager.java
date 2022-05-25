@@ -58,8 +58,6 @@ public class GameManager extends CardGame
     private Hand[] hands;
     private boolean enforceRules=false;
 
-    public void setStatus(String string) { setStatusText(string); }
-
     private int[] scores = new int[nbPlayers];
     private int[] tricks = new int[nbPlayers];
     private int[] bids = new int[nbPlayers];
@@ -169,7 +167,7 @@ public class GameManager extends CardGame
             // if (false) {
             if (0 == nextPlayer) {  // Select lead depending on player type
                 hands[0].setTouchEnabled(true);
-                setStatus("Player 0 double-click on card to lead.");
+                setStatusText("Player 0 double-click on card to lead.");
                 while (null == selected) delay(100);
             } else {
                 setStatusText("Player " + nextPlayer + " thinking...");
@@ -190,7 +188,7 @@ public class GameManager extends CardGame
                 // if (false) {
                 if (0 == nextPlayer) {
                     hands[0].setTouchEnabled(true);
-                    setStatus("Player 0 double-click on card to follow.");
+                    setStatusText("Player 0 double-click on card to follow.");
                     while (null == selected) delay(100);
                 } else {
                     setStatusText("Player " + nextPlayer + " thinking...");
