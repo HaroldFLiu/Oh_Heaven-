@@ -333,12 +333,7 @@ public class Oh_Heaven extends CardGame {
 	public static void main(String[] args)
 	{
 		//System.out.println("Working Directory = " + System.getProperty("user.dir"));
-		final Properties properties;
-		if (args == null || args.length == 0) {
-			PropertiesLoader.loadPropertiesFile(null);
-		} else {
-			PropertiesLoader.loadPropertiesFile(args[0]);
-		}
+		PropertiesLoader.setProperties(args);
 		new Oh_Heaven();
 	}
 

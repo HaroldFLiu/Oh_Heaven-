@@ -7,7 +7,15 @@ import java.io.InputStream;
 public class PropertiesLoader {
     private static final String DEFAULT_DIRECTORY_PATH = "properties/";
     private static Properties properties;
-    public static void loadPropertiesFile(String propertiesFile) {
+
+    public static void setProperties(String[] args)
+    {
+        if (args == null || args.length == 0)
+            loadPropertiesFile(null);
+        else
+            loadPropertiesFile(args[0]);
+    }
+    private static void loadPropertiesFile(String propertiesFile) {
         if (propertiesFile == null) {
             try (InputStream input = new FileInputStream(DEFAULT_DIRECTORY_PATH + "runmode.properties")) {
 
