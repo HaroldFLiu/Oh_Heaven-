@@ -39,12 +39,7 @@ public class GraphicsManager
 
     private final Location hideLocation = new Location(-500, - 500);
 
-    private GraphicsManager() {}
-
-    public static GraphicsManager getInstance()
-    {
-        return instance;
-    }
+    public GraphicsManager() {}
 
     public Actor setTrumpGraphics(CardGame game, Suit trump)
     {

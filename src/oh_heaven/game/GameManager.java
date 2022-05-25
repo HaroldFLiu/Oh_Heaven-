@@ -66,7 +66,7 @@ public class GameManager extends CardGame
     private int[] tricks = new int[nbPlayers];
     private int[] bids = new int[nbPlayers];
 
-    private GraphicsManager graphics = GraphicsManager.getInstance();
+    private GraphicsManager graphics = new GraphicsManager();
 
     public static void setSeed(int seed) {
         GameManager.seed = seed;
