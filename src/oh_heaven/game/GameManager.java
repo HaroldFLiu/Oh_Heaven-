@@ -56,7 +56,6 @@ public class GameManager extends CardGame
     private int nbRounds = 3;
     public final int madeBidBonus = 10;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
-    private final Location textLocation = new Location(350, 450);
     private final int thinkingTime = 2000;
     private Hand[] hands;
     private final Location hideLocation = new Location(-500, - 500);
@@ -279,7 +278,7 @@ public class GameManager extends CardGame
             winText = "Game Over. Drawn winners are players: " +
                     String.join(", ", winners.stream().map(String::valueOf).collect(Collectors.toSet()));
         }
-        addActor(new Actor("sprites/gameover.gif"), textLocation);
+        graphics.addGameOverText(this);
         setStatusText(winText);
         refresh();
     }

@@ -35,6 +35,8 @@ public class GraphicsManager
 
     private static GraphicsManager instance = new GraphicsManager();
 
+    private final Location textLocation = new Location(350, 450);
+
     private GraphicsManager() {}
 
     public static GraphicsManager getInstance()
@@ -89,5 +91,10 @@ public class GraphicsManager
     {
         game.removeActor(scoreActors[player]);
         setScore(game, player, score, trick, bid);
+    }
+
+    public void addGameOverText(CardGame game)
+    {
+        game.addActor(new Actor("sprites/gameover.gif"), textLocation);
     }
 }
