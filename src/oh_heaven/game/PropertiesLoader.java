@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class PropertiesLoader {
-    public static final String DEFAULT_DIRECTORY_PATH = "properties/";
-
-    public static Properties loadPropertiesFile(String propertiesFile) {
+    private static final String DEFAULT_DIRECTORY_PATH = "properties/";
+    private static Properties properties;
+    public static void loadPropertiesFile(String propertiesFile) {
         if (propertiesFile == null) {
             try (InputStream input = new FileInputStream(DEFAULT_DIRECTORY_PATH + "runmode.properties")) {
 
@@ -30,11 +30,30 @@ public class PropertiesLoader {
             // load a properties file
             prop.load(input);
 
-            return prop;
+            properties = prop;
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return null;
+    }
+
+    public static int getNbRounds()
+    {
+        return Integer.parseInt(properties.getProperty("rounds"));
+    }
+
+    public static int getNbStartCards()
+    {
+        return Integer.parseInt(properties.getProperty("nbStartCards"));
+    }
+
+    public static int getSeed()
+    {
+        return Integer.parseInt(properties.getProperty("seed"));
+    }
+
+    public static boolean getEnforceRules()
+    {
+        return Boolean.parseBoolean(properties.getProperty("enforceRules"));
     }
 }
 

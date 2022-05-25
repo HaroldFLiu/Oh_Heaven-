@@ -292,14 +292,14 @@ public class Oh_Heaven extends CardGame {
 		removeActor(trumpsActor);
 	}
 
-	public Oh_Heaven(Properties properties)
+	public Oh_Heaven()
 	{
 		super(700, 700, 30);
 		// property load
-		this.setNbRounds(Integer.parseInt(properties.getProperty("rounds")));
-		this.setNbStartCards(Integer.parseInt(properties.getProperty("nbStartCards")));
-		setSeed(Integer.parseInt(properties.getProperty("seed")));
-		this.setEnforceRules(Boolean.parseBoolean(properties.getProperty("enforceRules")));
+		this.setNbRounds(PropertiesLoader.getNbRounds());
+		this.setNbStartCards(PropertiesLoader.getNbStartCards());
+		this.setSeed(PropertiesLoader.getSeed());
+		this.setEnforceRules(PropertiesLoader.getEnforceRules());
 
 		setTitle("Oh_Heaven (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
 		setStatusText("Initializing...");
@@ -335,11 +335,11 @@ public class Oh_Heaven extends CardGame {
 		//System.out.println("Working Directory = " + System.getProperty("user.dir"));
 		final Properties properties;
 		if (args == null || args.length == 0) {
-			properties = PropertiesLoader.loadPropertiesFile(null);
+			PropertiesLoader.loadPropertiesFile(null);
 		} else {
-			properties = PropertiesLoader.loadPropertiesFile(args[0]);
+			PropertiesLoader.loadPropertiesFile(args[0]);
 		}
-		new Oh_Heaven(properties);
+		new Oh_Heaven();
 	}
 
 }
