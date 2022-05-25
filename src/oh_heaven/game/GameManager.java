@@ -77,7 +77,6 @@ public class GameManager extends CardGame
     private final int thinkingTime = 2000;
     private Hand[] hands;
     private final Location hideLocation = new Location(-500, - 500);
-    private final Location trumpsActorLocation = new Location(50, 50);
     private boolean enforceRules=false;
 
     public void setStatus(String string) { setStatusText(string); }
@@ -87,6 +86,8 @@ public class GameManager extends CardGame
     private int[] bids = new int[nbPlayers];
 
     Font bigFont = new Font("Serif", Font.BOLD, 36);
+
+    private GraphicsManager graphics = GraphicsManager.getInstance();
 
     public static void setSeed(int seed) {
         GameManager.seed = seed;
@@ -196,8 +197,8 @@ public class GameManager extends CardGame
     private void playRound() {
         // Select and display trump suit
         final Suit trumps = randomEnum(Suit.class);
-        final Actor trumpsActor = GraphicsManager.getInstance().getTrumpActor(trumps);
-        addActor(trumpsActor, trumpsActorLocation);
+        final Actor trumpsActor = graphics.getTrumpActor(trumps);
+        addActor(trumpsActor, graphics.getTrumpLocation());
         // End trump suit
         Hand trick;
         int winner;

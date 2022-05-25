@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class GraphicsManager
 {
-    final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
-
+    private final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
+    private final Location trumpLocation = new Location(50, 50);
 
     private static GraphicsManager instance = new GraphicsManager();
 
@@ -24,5 +24,10 @@ public class GraphicsManager
     public Actor getTrumpActor(Suit trump)
     {
         return new Actor("sprites/" + trumpImage[trump.ordinal()]);
+    }
+
+    public Location getTrumpLocation()
+    {
+        return trumpLocation;
     }
 }
