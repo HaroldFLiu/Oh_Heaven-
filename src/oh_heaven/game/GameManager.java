@@ -56,14 +56,6 @@ public class GameManager extends CardGame
     private int nbRounds = 3;
     public final int madeBidBonus = 10;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
-    private final Location[] scoreLocations = {
-            new Location(575, 675),
-            new Location(25, 575),
-            new Location(575, 25),
-            // new Location(650, 575)
-            new Location(575, 575)
-    };
-    private Actor[] scoreActors = {null, null, null, null };
     private final Location textLocation = new Location(350, 450);
     private final int thinkingTime = 2000;
     private Hand[] hands;
@@ -75,8 +67,6 @@ public class GameManager extends CardGame
     private int[] scores = new int[nbPlayers];
     private int[] tricks = new int[nbPlayers];
     private int[] bids = new int[nbPlayers];
-
-    Font bigFont = new Font("Serif", Font.BOLD, 36);
 
     private GraphicsManager graphics = GraphicsManager.getInstance();
 
@@ -95,23 +85,6 @@ public class GameManager extends CardGame
 
     public void setNbRounds(int nbRounds) {
         this.nbRounds = nbRounds;
-    }
-
-
-    private void initScore() {
-        for (int i = 0; i < nbPlayers; i++) {
-            // scores[i] = 0;
-            String text = "[" + String.valueOf(scores[i]) + "]" + String.valueOf(tricks[i]) + "/" + String.valueOf(bids[i]);
-            scoreActors[i] = new TextActor(text, Color.WHITE, bgColor, bigFont);
-            addActor(scoreActors[i], scoreLocations[i]);
-        }
-    }
-
-    private void updateScore(int player) {
-        removeActor(scoreActors[player]);
-        String text = "[" + String.valueOf(scores[player]) + "]" + String.valueOf(tricks[player]) + "/" + String.valueOf(bids[player]);
-        scoreActors[player] = new TextActor(text, Color.WHITE, bgColor, bigFont);
-        addActor(scoreActors[player], scoreLocations[player]);
     }
 
     private void initScores() {
@@ -193,7 +166,8 @@ public class GameManager extends CardGame
         int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
         initBids(trumps, nextPlayer);
         // initScore();
-        for (int i = 0; i < nbPlayers; i++) updateScore(i);
+        for (int i = 0; i < nbPlayers; i++)
+            graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
         for (int i = 0; i < nbStartCards; i++) {
             trick = new Hand(deck);
             selected = null;
@@ -266,7 +240,7 @@ public class GameManager extends CardGame
             nextPlayer = winner;
             setStatusText("Player " + nextPlayer + " wins trick.");
             tricks[nextPlayer]++;
-            updateScore(nextPlayer);
+            graphics.updateScoreGraphics(this, nextPlayer, scores[nextPlayer], tricks[nextPlayer], bids[nextPlayer]);
         }
         removeActor(trumpsActor);
     }
@@ -283,14 +257,15 @@ public class GameManager extends CardGame
         setTitle("Oh_Heaven (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
         setStatusText("Initializing...");
         initScores();
-        initScore();
+        graphics.initScoreGraphics(this, nbPlayers, scores, tricks, bids);
         for (int i=0; i <nbRounds; i++) {
             initTricks();
             initRound();
             playRound();
             updateScores();
         };
-        for (int i=0; i <nbPlayers; i++) updateScore(i);
+        for (int i=0; i <nbPlayers; i++)
+            graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
         int maxScore = 0;
         for (int i = 0; i <nbPlayers; i++) if (scores[i] > maxScore) maxScore = scores[i];
         Set <Integer> winners = new HashSet<Integer>();

@@ -23,6 +23,16 @@ public class GraphicsManager
     private final int trickWidth = 40;
     private final Location trickLocation = new Location(350, 350);
 
+    private final Location[] scoreLocations = {
+            new Location(575, 675),
+            new Location(25, 575),
+            new Location(575, 25),
+            // new Location(650, 575)
+            new Location(575, 575)
+    };
+    private Actor[] scoreActors = {null, null, null, null };
+    private Font bigFont = new Font("Serif", Font.BOLD, 36);
+
     private static GraphicsManager instance = new GraphicsManager();
 
     private GraphicsManager() {}
@@ -59,5 +69,25 @@ public class GraphicsManager
         trick.setView(game, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
         trick.draw();
         selected.setVerso(false);
+    }
+
+    private void setScore(CardGame game, int player, int score, int trick, int bid)
+    {
+        String text = "[" + String.valueOf(score) + "]" + String.valueOf(trick) + "/" + String.valueOf(bid);
+        scoreActors[player] = new TextActor(text, Color.WHITE, game.bgColor, bigFont);
+        game.addActor(scoreActors[player], scoreLocations[player]);
+    }
+
+    //TODO MAKE THIS WORK WITH PLAYERS INSTEAD
+    public void initScoreGraphics(CardGame game, int nbPlayers, int[] scores, int[] tricks, int[] bids)
+    {
+        for (int i = 0; i < nbPlayers; i++)
+            setScore(game, i, scores[i], tricks[i], bids[i]);
+    }
+
+    public void updateScoreGraphics(CardGame game, int player, int score, int trick, int bid)
+    {
+        game.removeActor(scoreActors[player]);
+        setScore(game, player, score, trick, bid);
     }
 }
