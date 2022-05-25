@@ -1,7 +1,5 @@
 package oh_heaven.game;
 
-// Oh_Heaven.java
-
 import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
 import java.awt.Color;
@@ -10,10 +8,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("serial")
-public class GameManager extends CardGame {
-
-    final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
-
+public class GameManager extends CardGame
+{
     private static int seed = 30006;
     private static Random random = new Random(seed);
 
@@ -200,7 +196,7 @@ public class GameManager extends CardGame {
     private void playRound() {
         // Select and display trump suit
         final Suit trumps = randomEnum(Suit.class);
-        final Actor trumpsActor = new Actor("sprites/"+trumpImage[trumps.ordinal()]);
+        final Actor trumpsActor = GraphicsManager.getInstance().getTrumpActor(trumps);
         addActor(trumpsActor, trumpsActorLocation);
         // End trump suit
         Hand trick;
