@@ -46,14 +46,11 @@ public class GraphicsManager
         return instance;
     }
 
-    public Actor getTrumpActor(Suit trump)
+    public Actor setTrumpGraphics(CardGame game, Suit trump)
     {
-        return new Actor("sprites/" + trumpImage[trump.ordinal()]);
-    }
-
-    public Location getTrumpLocation()
-    {
-        return trumpLocation;
+        Actor trumpActor = new Actor("sprites/" + trumpImage[trump.ordinal()]);
+        game.addActor(trumpActor, trumpLocation);
+        return trumpActor;
     }
 
     // todo CHANGE TO PLAYER INSTEAD OF INTEGER

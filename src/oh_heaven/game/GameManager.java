@@ -154,8 +154,7 @@ public class GameManager extends CardGame
     private void playRound() {
         // Select and display trump suit
         final Suit trumps = randomEnum(Suit.class);
-        final Actor trumpsActor = graphics.getTrumpActor(trumps);
-        addActor(trumpsActor, graphics.getTrumpLocation());
+        Actor trumpsActor = graphics.setTrumpGraphics(this, trumps);
         // End trump suit
         Hand trick;
         int winner;
