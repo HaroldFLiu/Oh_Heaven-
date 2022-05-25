@@ -4,8 +4,6 @@ import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class GraphicsManager
 {
