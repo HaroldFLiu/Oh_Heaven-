@@ -55,15 +55,7 @@ public class GameManager extends CardGame
     private int nbStartCards = 13;
     private int nbRounds = 3;
     public final int madeBidBonus = 10;
-    private final int handWidth = 400;
-    private final int trickWidth = 40;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
-    private final Location[] handLocations = {
-            new Location(350, 625),
-            new Location(75, 350),
-            new Location(350, 75),
-            new Location(625, 350)
-    };
     private final Location[] scoreLocations = {
             new Location(575, 675),
             new Location(25, 575),
@@ -72,7 +64,6 @@ public class GameManager extends CardGame
             new Location(575, 575)
     };
     private Actor[] scoreActors = {null, null, null, null };
-    private final Location trickLocation = new Location(350, 350);
     private final Location textLocation = new Location(350, 450);
     private final int thinkingTime = 2000;
     private Hand[] hands;
@@ -182,12 +173,7 @@ public class GameManager extends CardGame
         // graphics
         RowLayout[] layouts = new RowLayout[nbPlayers];
         for (int i = 0; i < nbPlayers; i++) {
-            layouts[i] = new RowLayout(handLocations[i], handWidth);
-            layouts[i].setRotationAngle(90 * i);
-            // layouts[i].setStepDelay(10);
-            hands[i].setView(this, layouts[i]);
-            hands[i].setTargetArea(new TargetArea(trickLocation));
-            hands[i].draw();
+            layouts[i] = graphics.getLayout(this, hands[i], i);
         }
 //	    for (int i = 1; i < nbPlayers; i++) // This code can be used to visually hide the cards in a hand (make them face down)
 //	      hands[i].setVerso(true);			// You do not need to use or change this code.
@@ -222,9 +208,7 @@ public class GameManager extends CardGame
                 selected = randomCard(hands[nextPlayer]);
             }
             // Lead with selected card
-            trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
-            trick.draw();
-            selected.setVerso(false);
+            graphics.setTrickView(this, trick, selected);
             // No restrictions on the card being lead
             lead = (Suit) selected.getSuit();
             selected.transfer(trick, true); // transfer to trick (includes graphic effect)
@@ -245,9 +229,7 @@ public class GameManager extends CardGame
                     selected = randomCard(hands[nextPlayer]);
                 }
                 // Follow with selected card
-                trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
-                trick.draw();
-                selected.setVerso(false);  // In case it is upside down
+                graphics.setTrickView(this, trick, selected);
                 // Check: Following card must follow suit if possible
                 if (selected.getSuit() != lead && hands[nextPlayer].getNumberOfCardsWithSuit(lead) > 0) {
                     // Rule violation
