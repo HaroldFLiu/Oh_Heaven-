@@ -197,6 +197,23 @@ public class GameManager extends CardGame
         // End graphics
     }
 
+    private void ruleViolationCheck(Suit lead, int nextPlayer) {
+        if (selected.getSuit() != lead && hands[nextPlayer].getNumberOfCardsWithSuit(lead) > 0) {
+            // Rule violation
+            String violation = "Follow rule broken by player " + nextPlayer + " attempting to play " + selected;
+            System.out.println(violation);
+            if (enforceRules)
+                try {
+                    throw(new BrokeRuleException(violation));
+                } catch (BrokeRuleException e) {
+                    e.printStackTrace();
+                    System.out.println("A cheating player spoiled the game!");
+                    System.exit(0);
+                }
+        }
+
+    }
+
     private void playRound() {
         // Select and display trump suit
         final Suit trumps = randomEnum(Suit.class);
@@ -251,20 +268,22 @@ public class GameManager extends CardGame
                 // Follow with selected card
                 graphics.setTrickView(this, trick, selected);
                 // Check: Following card must follow suit if possible
-                if (selected.getSuit() != lead && hands[nextPlayer].getNumberOfCardsWithSuit(lead) > 0) {
-                    // Rule violation
-                    String violation = "Follow rule broken by player " + nextPlayer + " attempting to play " + selected;
-                    System.out.println(violation);
-                    if (enforceRules)
-                        try {
-                            throw(new BrokeRuleException(violation));
-                        } catch (BrokeRuleException e) {
-                            e.printStackTrace();
-                            System.out.println("A cheating player spoiled the game!");
-                            System.exit(0);
-                        }
-                }
+                ruleViolationCheck(lead, nextPlayer);
+//                if (selected.getSuit() != lead && hands[nextPlayer].getNumberOfCardsWithSuit(lead) > 0) {
+//                    // Rule violation
+//                    String violation = "Follow rule broken by player " + nextPlayer + " attempting to play " + selected;
+//                    System.out.println(violation);
+//                    if (enforceRules)
+//                        try {
+//                            throw(new BrokeRuleException(violation));
+//                        } catch (BrokeRuleException e) {
+//                            e.printStackTrace();
+//                            System.out.println("A cheating player spoiled the game!");
+//                            System.exit(0);
+//                        }
+//                }
                 // End Check
+
                 selected.transfer(trick, true); // transfer to trick (includes graphic effect)
                 System.out.println("winning: " + winningCard);
                 System.out.println(" played: " + selected);
