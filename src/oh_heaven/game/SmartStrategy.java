@@ -38,28 +38,50 @@ public class SmartStrategy implements BotStrategy{
     @Override
     public Card follow(Hand hand, Suit trumps, Hand trick, int current_bid, int target_bid) {
         Suit leadSuit = (Suit) trick.getFirst().getSuit();
-
-        // if no card of lead suit try playing best card
-        if (hand.getNumberOfCardsWithSuit(leadSuit) == 0) {
-            Card temp = null;
-            for (Card card : hand.getCardList()) {
-                if (temp == null || (card.getSuit() == temp.getSuit() && card.getRankId()<temp.getRankId()) ||
-                        (card.getSuit() == trumps && temp.getSuit() != trumps)) {
-                    temp = card;
+        if (current_bid == target_bid) {
+            // if no card of lead suit try playing best card
+            if (hand.getNumberOfCardsWithSuit(leadSuit) == 0) {
+                Card temp = null;
+                for (Card card : hand.getCardList()) {
+                    if (temp == null || (card.getSuit() == temp.getSuit() && card.getRankId() < temp.getRankId()) ||
+                            (card.getSuit() == trumps && temp.getSuit() != trumps)) {
+                        temp = card;
+                    }
                 }
+                return temp;
             }
-            return temp;
-        }
-        // play best card with suit
-        else {
-            Card temp = null;
-            for (Card card : hand.getCardsWithSuit(leadSuit)) {
-                if (temp == null || card.getRankId()<temp.getRankId()) {
-                    temp = card;
+            // play best card with suit
+            else {
+                Card temp = null;
+                for (Card card : hand.getCardsWithSuit(leadSuit)) {
+                    if (temp == null || card.getRankId() < temp.getRankId()) {
+                        temp = card;
+                    }
                 }
+                return temp;
             }
-            return temp;
+        } else {
+            // if no card of lead suit try playing worst card
+            if (hand.getNumberOfCardsWithSuit(leadSuit) == 0) {
+                Card temp = null;
+                for (Card card : hand.getCardList()) {
+                    if (temp == null || (card.getSuit() == temp.getSuit() && card.getRankId() > temp.getRankId()) ||
+                            (card.getSuit() != trumps && temp.getSuit() != trumps)) {
+                        temp = card;
+                    }
+                }
+                return temp;
+            }
+            // play best card with suit
+            else {
+                Card temp = null;
+                for (Card card : hand.getCardsWithSuit(leadSuit)) {
+                    if (temp == null || card.getRankId() >= temp.getRankId()) {
+                        temp = card;
+                    }
+                }
+                return temp;
+            }
         }
     }
-
 }
