@@ -104,6 +104,32 @@ public class GameManager extends CardGame
             graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
     }
 
+    private void endGame()
+    {
+        int maxScore = 0;
+        for (int i = 0; i <nbPlayers; i++)
+            maxScore = Math.max(maxScore, scores[i]);
+
+        HashSet<Integer> winners = new HashSet<Integer>();
+        for (int i = 0; i <nbPlayers; i++)
+            if (scores[i] == maxScore)
+                winners.add(i);
+
+        String winText;
+        if (winners.size() == 1) {
+            winText = "Game over. Winner is player: " +
+                    winners.iterator().next();
+        }
+        else {
+            winText = "Game Over. Drawn winners are players: " +
+                    String.join(", ", winners.stream().map(String::valueOf).collect(Collectors.toSet()));
+        }
+
+        graphics.addGameOverText(this);
+        setStatusText(winText);
+        refresh();
+    }
+
     private void updateScores() {
         for (int i = 0; i < nbPlayers; i++) {
             scores[i] += tricks[i];
@@ -264,24 +290,7 @@ public class GameManager extends CardGame
         this.setEnforceRules(PropertiesLoader.getEnforceRules());
 
         startGame();
-
         runGame();
-
-        int maxScore = 0;
-        for (int i = 0; i <nbPlayers; i++) if (scores[i] > maxScore) maxScore = scores[i];
-        Set <Integer> winners = new HashSet<Integer>();
-        for (int i = 0; i <nbPlayers; i++) if (scores[i] == maxScore) winners.add(i);
-        String winText;
-        if (winners.size() == 1) {
-            winText = "Game over. Winner is player: " +
-                    winners.iterator().next();
-        }
-        else {
-            winText = "Game Over. Drawn winners are players: " +
-                    String.join(", ", winners.stream().map(String::valueOf).collect(Collectors.toSet()));
-        }
-        graphics.addGameOverText(this);
-        setStatusText(winText);
-        refresh();
+        endGame();
     }
 }
