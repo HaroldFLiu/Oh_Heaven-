@@ -202,19 +202,20 @@ public class GameManager extends CardGame
         final Suit trumps = randomEnum(Suit.class);
         Actor trumpsActor = graphics.setTrumpGraphics(this, trumps);
         // End trump suit
+
         Hand trick;
         int winner;
         Card winningCard;
         Suit lead;
         int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
         initBids(trumps, nextPlayer);
-        // initScore();
+
         for (int i = 0; i < nbPlayers; i++)
             graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
+
         for (int i = 0; i < nbStartCards; i++) {
             trick = new Hand(deck);
             selected = null;
-            // if (false) {
             if (0 == nextPlayer) {  // Select lead depending on player type
                 hands[0].setTouchEnabled(true);
                 setStatusText("Player 0 double-click on card to lead.");
@@ -232,6 +233,8 @@ public class GameManager extends CardGame
             winner = nextPlayer;
             winningCard = selected;
             // End Lead
+
+
             for (int j = 1; j < nbPlayers; j++) {
                 if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
                 selected = null;
