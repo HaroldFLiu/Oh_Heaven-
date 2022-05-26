@@ -36,6 +36,8 @@ public class Human extends Player {
     @Override
     public Card selectCard(CardGame game)
     {
+        this.selected = null;
+
         getHand().setTouchEnabled(true);
         game.setStatusText("Player 0 double-click on card to lead.");
         while (null == this.selected) game.delay(100);
