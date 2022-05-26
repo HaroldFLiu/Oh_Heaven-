@@ -270,10 +270,7 @@ public class GameManager extends CardGame
                 System.out.println(" played: " + selected);
                 // System.out.println("winning: suit = " + winningCard.getSuit() + ", rank = " + (13 - winningCard.getRankId()));
                 // System.out.println(" played: suit = " +    selected.getSuit() + ", rank = " + (13 -    selected.getRankId()));
-                if ( // beat current winner with higher card
-                        (selected.getSuit() == winningCard.getSuit() && rankGreater(selected, winningCard)) ||
-                                // trumped when non-trump was winning
-                                (selected.getSuit() == trumps && winningCard.getSuit() != trumps)) {
+                if (newWinnerCheck(selected, winningCard, trumps)) {
                     System.out.println("NEW WINNER");
                     winner = nextPlayer;
                     winningCard = selected;
@@ -288,6 +285,12 @@ public class GameManager extends CardGame
             graphics.updateScoreGraphics(this, nextPlayer, scores[nextPlayer], tricks[nextPlayer], bids[nextPlayer]);
         }
         removeActor(trumpsActor);
+    }
+
+    private boolean newWinnerCheck(Card selected, Card previous, Suit trumps) {
+        return (selected.getSuit() == previous.getSuit() && rankGreater(selected, previous)) ||
+                // trumped when non-trump was winning
+                (selected.getSuit() == trumps && previous.getSuit() != trumps);
     }
 
     public GameManager()
