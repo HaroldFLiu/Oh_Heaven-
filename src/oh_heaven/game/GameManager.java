@@ -27,6 +27,8 @@ public class GameManager extends CardGame
     public boolean rankGreater(Card card1, Card card2) {
         return card1.getRankId() < card2.getRankId(); // Warning: Reverse rank order of cards (see comment on enum)
     }
+
+
     public final int nbPlayers = 4;
     private int nbStartCards = 13;
     private int nbRounds = 3;
@@ -108,7 +110,7 @@ public class GameManager extends CardGame
         }
     }
 
-    private void initBids(Suit trumps, int nextPlayer) {
+    private void initBids(int nextPlayer) {
         int total = 0;
 
         for (int i = nextPlayer; i < nextPlayer + nbPlayers; i++)
