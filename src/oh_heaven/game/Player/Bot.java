@@ -15,9 +15,9 @@ public class Bot extends Player
     }
 
     @Override
-    public int makeBid(boolean lastBid, int previousBids, int nbStartCards, Random random)
+    public int makeBid(boolean lastBid, int previousBids, int nbStartCards)
     {
-        int bid = nbStartCards / 4 + random.nextInt(2);
+        int bid = nbStartCards / 4 + RandomCard.getInstance().getRandom().nextInt(2);
 
         // If total bids is equal to number of cards
         if (lastBid && previousBids + bid == nbStartCards)
@@ -25,7 +25,7 @@ public class Bot extends Player
             if (bid == 0)
                 bid = 1;
             else
-                bid += random.nextBoolean() ? -1 : 1;
+                bid += RandomCard.getInstance().getRandom().nextBoolean() ? -1 : 1;
         }
 
         this.bid = bid;
@@ -37,7 +37,7 @@ public class Bot extends Player
     {
         game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
         game.delay(thinkingTime);
-        this.selected = GameManager.randomCard(this.getHand());
+        this.selected = RandomCard.getInstance().randomCard(this.getHand());
 
         return null;
     }

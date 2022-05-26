@@ -7,15 +7,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SmartStrategy implements BotStrategy{
-    private final Random random;
-    public SmartStrategy(Random random) {
-        this.random=random;
-    }
     @Override
     public Card lead(Hand hand, Suit trumps, int current_bid, int target_bid) {
         if (current_bid==target_bid) {
             while (true){
-                int x = random.nextInt(hand.getNumberOfCards());
+                int x = RandomCard.getInstance().getRandom().nextInt(hand.getNumberOfCards());
                 if (hand.getNumberOfCardsWithSuit(trumps) == hand.getNumberOfCards()){
                     return hand.get(x);
                 }
@@ -25,7 +21,7 @@ public class SmartStrategy implements BotStrategy{
         }
         else {
             while (true){
-                int x = random.nextInt(hand.getNumberOfCards());
+                int x = RandomCard.getInstance().getRandom().nextInt(hand.getNumberOfCards());
                 if (hand.getNumberOfCardsWithSuit(trumps) == 0){
                     return hand.get(x);
                 }

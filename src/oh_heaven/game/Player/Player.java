@@ -37,7 +37,7 @@ public abstract class Player
             playerScore += madeBidBonus;
     }
 
-    public abstract int makeBid(boolean lastBid, int previousBids, int nbStartCards, Random random);
+    public abstract int makeBid(boolean lastBid, int previousBids, int nbStartCards);
 
     public abstract Card selectCard(CardGame game);
 

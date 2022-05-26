@@ -9,34 +9,13 @@ import oh_heaven.game.Player.*;
 @SuppressWarnings("serial")
 public class GameManager extends CardGame
 {
-    private static int seed = 30006;
-    protected static Random random = new Random(seed);
-
-    // return random Enum value
-    public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
-        int x = random.nextInt(clazz.getEnumConstants().length);
-        return clazz.getEnumConstants()[x];
-    }
-
-    // return random Card from Hand
-    public static Card randomCard(Hand hand){
-        int x = random.nextInt(hand.getNumberOfCards());
-        return hand.get(x);
-    }
-
-    // return random Card from ArrayList
-    public static Card randomCard(ArrayList<Card> list){
-        int x = random.nextInt(list.size());
-        return list.get(x);
-    }
-
     private void dealingOut() {
         Hand pack = deck.toHand(false);
         // pack.setView(Oh_Heaven.this, new RowLayout(hideLocation, 0));
         for (int i = 0; i < nbStartCards; i++) {
             for (int j=0; j < nbPlayers; j++) {
                 if (pack.isEmpty()) return;
-                Card dealt = randomCard(pack);
+                Card dealt = RandomCard.getInstance().randomCard(pack);
                 // System.out.println("Cards = " + dealt);
                 dealt.removeFromHand(false);
                 players[j].getHand().insert(dealt, false);
@@ -55,13 +34,11 @@ public class GameManager extends CardGame
     private boolean enforceRules=false;
 
     private Player[] players = new Player[nbPlayers];
-    private Human human;
 
     private GraphicsManager graphics = new GraphicsManager();
 
     public static void setSeed(int seed) {
-        GameManager.seed = seed;
-        GameManager.random = new Random(seed);
+        RandomCard.getInstance().setSeed(seed);
     }
 
     private void setProperties()
@@ -137,7 +114,7 @@ public class GameManager extends CardGame
         for (int i = nextPlayer; i < nextPlayer + nbPlayers; i++)
         {
             int iP = i % nbPlayers;
-            total += players[iP].makeBid(i+1 == nextPlayer + nbPlayers, total, nbStartCards, random);
+            total += players[iP].makeBid(i+1 == nextPlayer + nbPlayers, total, nbStartCards);
         }
     }
 
@@ -187,7 +164,7 @@ public class GameManager extends CardGame
 
     private void playRound() {
         // Select and display trump suit
-        final Suit trumps = randomEnum(Suit.class);
+        final Suit trumps = RandomCard.getInstance().randomEnum(Suit.class);
         Actor trumpsActor = graphics.setTrumpGraphics(this, trumps);
         // End trump suit
 
@@ -195,7 +172,7 @@ public class GameManager extends CardGame
         int winner;
         Card winningCard;
         Suit lead;
-        int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
+        int nextPlayer = RandomCard.getInstance().getRandom().nextInt(nbPlayers); // randomly select player to lead for this round
         initBids(trumps, nextPlayer);
 
         for (int i = 0; i < nbPlayers; i++)

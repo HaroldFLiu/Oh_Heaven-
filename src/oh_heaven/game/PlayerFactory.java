@@ -24,10 +24,10 @@ public class PlayerFactory {
         return new Human();
     }
     private static Bot getLegal() {
-        return new Bot(new LegalStrategy(GameManager.random));
+        return new Bot(new LegalStrategy());
     }
     private static Bot getSmart() {
-        return new Bot(new SmartStrategy(GameManager.random));
+        return new Bot(new SmartStrategy());
     }
     private static Bot getRandom() {
         return new Bot(new RandomStrategy());
