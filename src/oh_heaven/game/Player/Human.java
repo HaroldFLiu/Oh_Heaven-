@@ -1,9 +1,7 @@
 package oh_heaven.game.Player;
 import ch.aplu.jcardgame.*;
-import oh_heaven.game.RandomCard;
+import oh_heaven.game.RandomHandler;
 import oh_heaven.game.Suit;
-
-import java.util.Random;
 
 public class Human extends Player {
     public Human()
@@ -23,7 +21,7 @@ public class Human extends Player {
     @Override
     public int makeBid(boolean lastBid, int previousBids, int nbStartCards)
     {
-        int bid = nbStartCards / 4 + RandomCard.getInstance().getRandom().nextInt(2);
+        int bid = nbStartCards / 4 + RandomHandler.getInstance().getRandom().nextInt(2);
 
         // If total bids is equal to number of cards
         if (lastBid && previousBids + bid == nbStartCards)

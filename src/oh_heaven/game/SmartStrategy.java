@@ -3,15 +3,12 @@ package oh_heaven.game;
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 public class SmartStrategy implements BotStrategy{
     @Override
     public Card lead(Hand hand, Suit trumps, int current_bid, int target_bid) {
         if (current_bid==target_bid) {
             while (true){
-                int x = RandomCard.getInstance().getRandom().nextInt(hand.getNumberOfCards());
+                int x = RandomHandler.getInstance().getRandom().nextInt(hand.getNumberOfCards());
                 if (hand.getNumberOfCardsWithSuit(trumps) == hand.getNumberOfCards()){
                     return hand.get(x);
                 }
@@ -21,7 +18,7 @@ public class SmartStrategy implements BotStrategy{
         }
         else {
             while (true){
-                int x = RandomCard.getInstance().getRandom().nextInt(hand.getNumberOfCards());
+                int x = RandomHandler.getInstance().getRandom().nextInt(hand.getNumberOfCards());
                 if (hand.getNumberOfCardsWithSuit(trumps) == 0){
                     return hand.get(x);
                 }

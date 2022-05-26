@@ -5,18 +5,18 @@ import ch.aplu.jcardgame.Hand;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RandomCard
+public class RandomHandler
 {
-    private static final RandomCard instance = new RandomCard();
+    private static final RandomHandler instance = new RandomHandler();
 
     private Random random;
 
-    private RandomCard()
+    private RandomHandler()
     {
 
     }
 
-    public static RandomCard getInstance()
+    public static RandomHandler getInstance()
     {
         return instance;
     }

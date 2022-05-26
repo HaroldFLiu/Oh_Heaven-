@@ -1,7 +1,6 @@
 package oh_heaven.game.Player;
 import oh_heaven.game.*;
 import ch.aplu.jcardgame.*;
-import java.util.*;
 
 public class Bot extends Player
 {
@@ -17,7 +16,7 @@ public class Bot extends Player
     @Override
     public int makeBid(boolean lastBid, int previousBids, int nbStartCards)
     {
-        int bid = nbStartCards / 4 + RandomCard.getInstance().getRandom().nextInt(2);
+        int bid = nbStartCards / 4 + RandomHandler.getInstance().getRandom().nextInt(2);
 
         // If total bids is equal to number of cards
         if (lastBid && previousBids + bid == nbStartCards)
@@ -25,7 +24,7 @@ public class Bot extends Player
             if (bid == 0)
                 bid = 1;
             else
-                bid += RandomCard.getInstance().getRandom().nextBoolean() ? -1 : 1;
+                bid += RandomHandler.getInstance().getRandom().nextBoolean() ? -1 : 1;
         }
 
         this.bid = bid;
@@ -37,7 +36,7 @@ public class Bot extends Player
     {
         game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
         game.delay(thinkingTime);
-        this.selected = RandomCard.getInstance().randomCard(this.getHand());
+        this.selected = RandomHandler.getInstance().randomCard(this.getHand());
 
         return null;
     }

@@ -15,7 +15,7 @@ public class GameManager extends CardGame
         for (int i = 0; i < nbStartCards; i++) {
             for (int j=0; j < nbPlayers; j++) {
                 if (pack.isEmpty()) return;
-                Card dealt = RandomCard.getInstance().randomCard(pack);
+                Card dealt = RandomHandler.getInstance().randomCard(pack);
                 // System.out.println("Cards = " + dealt);
                 dealt.removeFromHand(false);
                 players[j].getHand().insert(dealt, false);
@@ -38,7 +38,7 @@ public class GameManager extends CardGame
     private GraphicsManager graphics = new GraphicsManager();
 
     public static void setSeed(int seed) {
-        RandomCard.getInstance().setSeed(seed);
+        RandomHandler.getInstance().setSeed(seed);
     }
 
     private void setProperties()
@@ -164,7 +164,7 @@ public class GameManager extends CardGame
 
     private void playRound() {
         // Select and display trump suit
-        final Suit trumps = RandomCard.getInstance().randomEnum(Suit.class);
+        final Suit trumps = RandomHandler.getInstance().randomEnum(Suit.class);
         Actor trumpsActor = graphics.setTrumpGraphics(this, trumps);
         // End trump suit
 
@@ -172,7 +172,7 @@ public class GameManager extends CardGame
         int winner;
         Card winningCard;
         Suit lead;
-        int nextPlayer = RandomCard.getInstance().getRandom().nextInt(nbPlayers); // randomly select player to lead for this round
+        int nextPlayer = RandomHandler.getInstance().getRandom().nextInt(nbPlayers); // randomly select player to lead for this round
         initBids(trumps, nextPlayer);
 
         for (int i = 0; i < nbPlayers; i++)
