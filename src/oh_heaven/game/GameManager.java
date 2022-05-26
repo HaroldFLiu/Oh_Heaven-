@@ -4,6 +4,7 @@ import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import oh_heaven.game.Player.*;
 
 @SuppressWarnings("serial")
 public class GameManager extends CardGame
@@ -59,6 +60,8 @@ public class GameManager extends CardGame
     private int[] scores = new int[nbPlayers];
     private int[] tricks = new int[nbPlayers];
     private int[] bids = new int[nbPlayers];
+
+    private Player[] players = new Player[nbPlayers];
 
     private GraphicsManager graphics = new GraphicsManager();
 
