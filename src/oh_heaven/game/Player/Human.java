@@ -39,7 +39,7 @@ public class Human extends Player {
         this.selected = null;
 
         getHand().setTouchEnabled(true);
-        game.setStatusText("Player 0 double-click on card to lead.");
+        game.setStatusText("Player " + getPlayerNumber() + " double-click on card to lead.");
         while (null == this.selected) game.delay(100);
         return this.selected;
     }

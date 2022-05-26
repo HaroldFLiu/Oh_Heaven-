@@ -51,9 +51,7 @@ public class GameManager extends CardGame
     public final int nbPlayers = 4;
     private int nbStartCards = 13;
     private int nbRounds = 3;
-    public final int madeBidBonus = 10;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
-    private final int thinkingTime = 2000;
     private boolean enforceRules=false;
 
     private Player[] players = new Player[nbPlayers];
@@ -90,6 +88,7 @@ public class GameManager extends CardGame
     {
         human = new Human();
         players[0] = human;
+
         for (int i = 1; i < nbPlayers; i++)
             players[i] = new Bot();
     }
@@ -169,7 +168,8 @@ public class GameManager extends CardGame
             players[i].getHand().sort(Hand.SortType.SUITPRIORITY, true);
         }
         // Set up human player for interaction
-        human.makeCardListener();
+        if (human != null)
+            human.makeCardListener();
         // graphics
         RowLayout[] layouts = new RowLayout[nbPlayers];
         for (int i = 0; i < nbPlayers; i++) {

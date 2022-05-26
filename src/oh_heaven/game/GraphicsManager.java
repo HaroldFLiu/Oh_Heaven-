@@ -32,8 +32,6 @@ public class GraphicsManager
     private Actor[] scoreActors = {null, null, null, null };
     private Font bigFont = new Font("Serif", Font.BOLD, 36);
 
-    private static GraphicsManager instance = new GraphicsManager();
-
     private final Location textLocation = new Location(350, 450);
 
     private final Location hideLocation = new Location(-500, - 500);
