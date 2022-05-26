@@ -79,6 +79,13 @@ public class GameManager extends CardGame
         this.nbRounds = nbRounds;
     }
 
+    private void setProperties()
+    {
+        this.setNbRounds(PropertiesLoader.getNbRounds());
+        this.setNbStartCards(PropertiesLoader.getNbStartCards());
+        this.setSeed(PropertiesLoader.getSeed());
+        this.setEnforceRules(PropertiesLoader.getEnforceRules());
+    }
     private void startGame()
     {
         graphics.setTitle(this);
@@ -283,12 +290,8 @@ public class GameManager extends CardGame
     public GameManager()
     {
         super(700, 700, 30);
-        // property load
-        this.setNbRounds(PropertiesLoader.getNbRounds());
-        this.setNbStartCards(PropertiesLoader.getNbStartCards());
-        this.setSeed(PropertiesLoader.getSeed());
-        this.setEnforceRules(PropertiesLoader.getEnforceRules());
 
+        setProperties();
         startGame();
         runGame();
         endGame();
