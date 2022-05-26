@@ -79,7 +79,11 @@ public class GameManager extends CardGame
         this.nbRounds = nbRounds;
     }
 
-    private void startGame() {
+    private void startGame()
+    {
+        graphics.setTitle(this);
+        setStatusText("Initializing...");
+
         for (int i = 0; i < nbPlayers; i++) {
             scores[i] = 0;
         }
@@ -245,7 +249,7 @@ public class GameManager extends CardGame
         this.setNbStartCards(PropertiesLoader.getNbStartCards());
         this.setSeed(PropertiesLoader.getSeed());
         this.setEnforceRules(PropertiesLoader.getEnforceRules());
-
+        
         startGame();
 
         for (int i=0; i <nbRounds; i++) {
