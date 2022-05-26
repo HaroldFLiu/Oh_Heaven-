@@ -1,4 +1,4 @@
-package oh_heaven.game;
+package oh_heaven.game.Player;
 import ch.aplu.jcardgame.*;
 
 public abstract class Player
