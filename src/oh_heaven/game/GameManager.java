@@ -64,24 +64,12 @@ public class GameManager extends CardGame
         GameManager.random = new Random(seed);
     }
 
-    public void setEnforceRules(boolean enforceRules) {
-        this.enforceRules = enforceRules;
-    }
-
-    public void setNbStartCards(int nbStartCards) {
-        this.nbStartCards = nbStartCards;
-    }
-
-    public void setNbRounds(int nbRounds) {
-        this.nbRounds = nbRounds;
-    }
-
     private void setProperties()
     {
-        this.setNbRounds(PropertiesLoader.getNbRounds());
-        this.setNbStartCards(PropertiesLoader.getNbStartCards());
+        nbRounds = PropertiesLoader.getNbRounds();
+        nbStartCards = PropertiesLoader.getNbStartCards();
+        enforceRules = PropertiesLoader.getEnforceRules();
         this.setSeed(PropertiesLoader.getSeed());
-        this.setEnforceRules(PropertiesLoader.getEnforceRules());
     }
 
     private void createPlayers()
