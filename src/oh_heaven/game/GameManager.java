@@ -175,7 +175,7 @@ public class GameManager extends CardGame
         Card winningCard;
         Suit lead;
         int nextPlayer = RandomHandler.getInstance().getRandom().nextInt(nbPlayers); // randomly select player to lead for this round
-        initBids(trumps, nextPlayer);
+        initBids(nextPlayer);
 
         for (int i = 0; i < nbPlayers; i++)
             graphics.updateScoreGraphics(this, players[i]);
