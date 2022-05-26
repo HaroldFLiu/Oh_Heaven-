@@ -18,6 +18,8 @@ public abstract class Player
     public Player()
     {
         playerNumber = playerCount++;
+
+        playerScore = 0;
     }
 
     public void startRound(Deck deck)
@@ -35,7 +37,7 @@ public abstract class Player
 
     public abstract int makeBid(boolean lastBid, int previousBids, int nbStartCards, Random random);
 
-    public abstract void selectCard(CardGame game);
+    public abstract Card selectCard(CardGame game);
 
     // TODO CHANGE TO TRICK CLASS
     public void playCard(Hand trick)
@@ -56,5 +58,20 @@ public abstract class Player
     public int getPlayerNumber()
     {
         return playerNumber;
+    }
+
+    public int getScore()
+    {
+        return playerScore;
+    }
+
+    public int getTricks()
+    {
+        return tricksWon;
+    }
+
+    public int getBid()
+    {
+        return bid;
     }
 }

@@ -19,17 +19,24 @@ public class Bot extends Player
 
         // If total bids is equal to number of cards
         if (lastBid && previousBids + bid == nbStartCards)
-            bid++;
+        {
+            if (bid == 0)
+                bid = 1;
+            else
+                bid += random.nextBoolean() ? -1 : 1;
+        }
 
         this.bid = bid;
         return bid;
     }
 
     @Override
-    public void selectCard(CardGame game)
+    public Card selectCard(CardGame game)
     {
         game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
         game.delay(thinkingTime);
-        selected = GameManager.randomCard(this.getHand());
+        this.selected = GameManager.randomCard(this.getHand());
+
+        return this.selected;
     }
 }

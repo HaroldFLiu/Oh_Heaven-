@@ -4,6 +4,7 @@ import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
 import java.awt.Color;
 import java.awt.Font;
+import oh_heaven.game.Player.*;
 
 public class GraphicsManager
 {
@@ -67,24 +68,24 @@ public class GraphicsManager
         selected.setVerso(false);
     }
 
-    private void setScore(CardGame game, int player, int score, int trick, int bid)
+    private void setScore(CardGame game, Player player)
     {
-        String text = "[" + String.valueOf(score) + "]" + String.valueOf(trick) + "/" + String.valueOf(bid);
-        scoreActors[player] = new TextActor(text, Color.WHITE, game.bgColor, bigFont);
-        game.addActor(scoreActors[player], scoreLocations[player]);
+        String text = "[" + String.valueOf(player.getScore()) + "]" + String.valueOf(player.getTricks()) + "/" + String.valueOf(player.getBid());
+        scoreActors[player.getPlayerNumber()] = new TextActor(text, Color.WHITE, game.bgColor, bigFont);
+        game.addActor(scoreActors[player.getPlayerNumber()], scoreLocations[player.getPlayerNumber()]);
     }
 
     //TODO MAKE THIS WORK WITH PLAYERS INSTEAD
-    public void initScoreGraphics(CardGame game, int nbPlayers, int[] scores, int[] tricks, int[] bids)
+    public void initScoreGraphics(CardGame game, Player[] players)
     {
-        for (int i = 0; i < nbPlayers; i++)
-            setScore(game, i, scores[i], tricks[i], bids[i]);
+        for (Player p : players)
+            setScore(game, p);
     }
 
-    public void updateScoreGraphics(CardGame game, int player, int score, int trick, int bid)
+    public void updateScoreGraphics(CardGame game, Player player)
     {
-        game.removeActor(scoreActors[player]);
-        setScore(game, player, score, trick, bid);
+        game.removeActor(scoreActors[player.getPlayerNumber()]);
+        setScore(game, player);
     }
 
     public void addGameOverText(CardGame game)

@@ -34,10 +34,11 @@ public class Human extends Player {
     }
 
     @Override
-    public void selectCard(CardGame game)
+    public Card selectCard(CardGame game)
     {
         getHand().setTouchEnabled(true);
         game.setStatusText("Player 0 double-click on card to lead.");
-        while (null == selected) game.delay(100);
+        while (null == this.selected) game.delay(100);
+        return this.selected;
     }
 }

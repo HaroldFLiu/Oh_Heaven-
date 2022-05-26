@@ -30,16 +30,16 @@ public class GameManager extends CardGame
         return list.get(x);
     }
 
-    private void dealingOut(Hand[] hands, int nbPlayers, int nbCardsPerPlayer) {
+    private void dealingOut() {
         Hand pack = deck.toHand(false);
         // pack.setView(Oh_Heaven.this, new RowLayout(hideLocation, 0));
-        for (int i = 0; i < nbCardsPerPlayer; i++) {
+        for (int i = 0; i < nbStartCards; i++) {
             for (int j=0; j < nbPlayers; j++) {
                 if (pack.isEmpty()) return;
                 Card dealt = randomCard(pack);
                 // System.out.println("Cards = " + dealt);
                 dealt.removeFromHand(false);
-                hands[j].insert(dealt, false);
+                players[j].getHand().insert(dealt, false);
                 // dealt.transfer(hands[j], true);
             }
         }
@@ -54,14 +54,10 @@ public class GameManager extends CardGame
     public final int madeBidBonus = 10;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     private final int thinkingTime = 2000;
-    private Hand[] hands;
     private boolean enforceRules=false;
 
-    private int[] scores = new int[nbPlayers];
-    private int[] tricks = new int[nbPlayers];
-    private int[] bids = new int[nbPlayers];
-
     private Player[] players = new Player[nbPlayers];
+    private Human human;
 
     private GraphicsManager graphics = new GraphicsManager();
 
@@ -89,40 +85,45 @@ public class GameManager extends CardGame
         this.setSeed(PropertiesLoader.getSeed());
         this.setEnforceRules(PropertiesLoader.getEnforceRules());
     }
+
+    private void createPlayers()
+    {
+        human = new Human();
+        players[0] = human;
+        for (int i = 1; i < nbPlayers; i++)
+            players[i] = new Bot();
+    }
     private void startGame()
     {
         graphics.setTitle(this);
         setStatusText("Initializing...");
 
-        for (int i = 0; i < nbPlayers; i++) {
-            scores[i] = 0;
-        }
+        this.createPlayers();
 
-        graphics.initScoreGraphics(this, nbPlayers, scores, tricks, bids);
+        graphics.initScoreGraphics(this, players);
     }
 
     private void runGame()
     {
         for (int i=0; i <nbRounds; i++) {
-            initTricks();
             initRound();
             playRound();
             updateScores();
         };
 
         for (int i=0; i <nbPlayers; i++)
-            graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
+            graphics.updateScoreGraphics(this, players[i]);
     }
 
     private void endGame()
     {
         int maxScore = 0;
         for (int i = 0; i <nbPlayers; i++)
-            maxScore = Math.max(maxScore, scores[i]);
+            maxScore = Math.max(maxScore, players[i].getScore());
 
         HashSet<Integer> winners = new HashSet<Integer>();
         for (int i = 0; i <nbPlayers; i++)
-            if (scores[i] == maxScore)
+            if (players[i].getScore() == maxScore)
                 winners.add(i);
 
         String winText;
@@ -142,58 +143,37 @@ public class GameManager extends CardGame
 
     private void updateScores() {
         for (int i = 0; i < nbPlayers; i++) {
-            scores[i] += tricks[i];
-            if (tricks[i] == bids[i]) scores[i] += madeBidBonus;
-        }
-    }
-
-    private void initTricks() {
-        for (int i = 0; i < nbPlayers; i++) {
-            tricks[i] = 0;
+            players[i].updateScore();
         }
     }
 
     private void initBids(Suit trumps, int nextPlayer) {
         int total = 0;
-        for (int i = nextPlayer; i < nextPlayer + nbPlayers; i++) {
+
+        for (int i = nextPlayer; i < nextPlayer + nbPlayers; i++)
+        {
             int iP = i % nbPlayers;
-            bids[iP] = nbStartCards / 4 + random.nextInt(2);
-            total += bids[iP];
+            total += players[iP].makeBid(i+1 == nextPlayer + nbPlayers, total, nbStartCards, random);
         }
-        if (total == nbStartCards) {  // Force last bid so not every bid possible
-            int iP = (nextPlayer + nbPlayers) % nbPlayers;
-            if (bids[iP] == 0) {
-                bids[iP] = 1;
-            } else {
-                bids[iP] += random.nextBoolean() ? -1 : 1;
-            }
-        }
-        // for (int i = 0; i < nbPlayers; i++) {
-        // 	 bids[i] = nbStartCards / 4 + 1;
-        //  }
     }
 
     private Card selected;
 
     private void initRound() {
-        hands = new Hand[nbPlayers];
+        for (int i = 0; i < nbPlayers; i++)
+            players[i].startRound(deck);
+
+        dealingOut();
+
         for (int i = 0; i < nbPlayers; i++) {
-            hands[i] = new Hand(deck);
-        }
-        dealingOut(hands, nbPlayers, nbStartCards);
-        for (int i = 0; i < nbPlayers; i++) {
-            hands[i].sort(Hand.SortType.SUITPRIORITY, true);
+            players[i].getHand().sort(Hand.SortType.SUITPRIORITY, true);
         }
         // Set up human player for interaction
-        CardListener cardListener = new CardAdapter()  // Human Player plays card
-        {
-            public void leftDoubleClicked(Card card) { selected = card; hands[0].setTouchEnabled(false); }
-        };
-        hands[0].addCardListener(cardListener);
+        human.makeCardListener();
         // graphics
         RowLayout[] layouts = new RowLayout[nbPlayers];
         for (int i = 0; i < nbPlayers; i++) {
-            layouts[i] = graphics.getLayout(this, hands[i], i);
+            layouts[i] = graphics.getLayout(this, players[i].getHand(), i);
         }
 //	    for (int i = 1; i < nbPlayers; i++) // This code can be used to visually hide the cards in a hand (make them face down)
 //	      hands[i].setVerso(true);			// You do not need to use or change this code.
@@ -201,7 +181,7 @@ public class GameManager extends CardGame
     }
 
     private void ruleViolationCheck(Suit lead, int nextPlayer) {
-        if (selected.getSuit() != lead && hands[nextPlayer].getNumberOfCardsWithSuit(lead) > 0) {
+        if (selected.getSuit() != lead && players[nextPlayer].getHand().getNumberOfCardsWithSuit(lead) > 0) {
             // Rule violation
             String violation = "Follow rule broken by player " + nextPlayer + " attempting to play " + selected;
             System.out.println(violation);
@@ -231,20 +211,11 @@ public class GameManager extends CardGame
         initBids(trumps, nextPlayer);
 
         for (int i = 0; i < nbPlayers; i++)
-            graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
+            graphics.updateScoreGraphics(this, players[i]);
 
         for (int i = 0; i < nbStartCards; i++) {
             trick = new Hand(deck);
-            selected = null;
-            if (0 == nextPlayer) {  // Select lead depending on player type
-                hands[0].setTouchEnabled(true);
-                setStatusText("Player 0 double-click on card to lead.");
-                while (null == selected) delay(100);
-            } else {
-                setStatusText("Player " + nextPlayer + " thinking...");
-                delay(thinkingTime);
-                selected = randomCard(hands[nextPlayer]);
-            }
+            selected = players[nextPlayer].selectCard(this);
             // Lead with selected card
             graphics.setTrickView(this, trick, selected);
             // No restrictions on the card being lead
@@ -256,17 +227,7 @@ public class GameManager extends CardGame
 
             for (int j = 1; j < nbPlayers; j++) {
                 if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
-                selected = null;
-
-                if (0 == nextPlayer) {
-                    hands[0].setTouchEnabled(true);
-                    setStatusText("Player 0 double-click on card to follow.");
-                    while (null == selected) delay(100);
-                } else {
-                    setStatusText("Player " + nextPlayer + " thinking...");
-                    delay(thinkingTime);
-                    selected = randomCard(hands[nextPlayer]);
-                }
+                selected = players[nextPlayer].selectCard(this);
 
                 // Follow with selected card
                 graphics.setTrickView(this, trick, selected);
@@ -290,8 +251,8 @@ public class GameManager extends CardGame
             graphics.hideTrick(this, trick);
             nextPlayer = winner;
             setStatusText("Player " + nextPlayer + " wins trick.");
-            tricks[nextPlayer]++;
-            graphics.updateScoreGraphics(this, nextPlayer, scores[nextPlayer], tricks[nextPlayer], bids[nextPlayer]);
+            players[nextPlayer].winTrick();
+            graphics.updateScoreGraphics(this, players[nextPlayer]);
         }
         removeActor(trumpsActor);
     }
