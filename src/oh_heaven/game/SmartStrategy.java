@@ -53,7 +53,7 @@ public class SmartStrategy implements BotStrategy{
         // play best card with suit
         else {
             Card temp = null;
-            for (Card card : hand.getCardsWithSuit(trumps)) {
+            for (Card card : hand.getCardsWithSuit(leadSuit)) {
                 if (temp == null || card.getRankId()<temp.getRankId()) {
                     temp = card;
                 }
