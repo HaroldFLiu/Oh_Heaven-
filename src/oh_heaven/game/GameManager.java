@@ -35,7 +35,7 @@ public class GameManager extends CardGame
 
     private Player[] players = new Player[nbPlayers];
 
-    private GraphicsManager graphics = new GraphicsManager();
+    private final GraphicsManager graphics = new GraphicsManager();
 
     public static void setSeed(int seed) {
         RandomHandler.getInstance().setSeed(seed);
@@ -46,7 +46,7 @@ public class GameManager extends CardGame
         nbRounds = PropertiesLoader.getNbRounds();
         nbStartCards = PropertiesLoader.getNbStartCards();
         enforceRules = PropertiesLoader.getEnforceRules();
-        this.setSeed(PropertiesLoader.getSeed());
+        setSeed(PropertiesLoader.getSeed());
     }
 
     private void createPlayers()
@@ -70,7 +70,7 @@ public class GameManager extends CardGame
             initRound();
             playRound();
             updateScores();
-        };
+        }
 
         for (int i=0; i <nbPlayers; i++)
             graphics.updateScoreGraphics(this, players[i]);
