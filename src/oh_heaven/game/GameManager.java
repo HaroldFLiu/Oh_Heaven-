@@ -47,8 +47,6 @@ public class GameManager extends CardGame
     public boolean rankGreater(Card card1, Card card2) {
         return card1.getRankId() < card2.getRankId(); // Warning: Reverse rank order of cards (see comment on enum)
     }
-
-    private final String version = "1.0";
     public final int nbPlayers = 4;
     private int nbStartCards = 13;
     private int nbRounds = 3;
@@ -246,7 +244,7 @@ public class GameManager extends CardGame
         this.setSeed(PropertiesLoader.getSeed());
         this.setEnforceRules(PropertiesLoader.getEnforceRules());
 
-        setTitle("Oh_Heaven (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
+        graphics.setTitle(this);
         setStatusText("Initializing...");
         initScores();
         graphics.initScoreGraphics(this, nbPlayers, scores, tricks, bids);

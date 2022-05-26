@@ -37,6 +37,8 @@ public class GraphicsManager
 
     private final Location hideLocation = new Location(-500, - 500);
 
+    private final String version = "1.0";
+
     public GraphicsManager() {}
 
     public Actor setTrumpGraphics(CardGame game, Suit trump)
@@ -94,5 +96,10 @@ public class GraphicsManager
     {
         trick.setView(game, new RowLayout(hideLocation, 0));
         trick.draw();
+    }
+
+    public void setTitle(CardGame game)
+    {
+        game.setTitle("Oh_Heaven (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
     }
 }
