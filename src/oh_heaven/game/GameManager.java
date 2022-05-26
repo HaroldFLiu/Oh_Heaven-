@@ -208,7 +208,7 @@ public class GameManager extends CardGame
             graphics.setTrickView(this, trick, selected);
             // No restrictions on the card being lead
             lead = (Suit) selected.getSuit();
-            selected.transfer(trick, true); // transfer to trick (includes graphic effect)
+            players[nextPlayer].playCard(trick);
             winner = nextPlayer;
             winningCard = selected;
             // End Lead
@@ -223,7 +223,7 @@ public class GameManager extends CardGame
                 ruleViolationCheck(lead, nextPlayer);
                 // End Check
 
-                selected.transfer(trick, true); // transfer to trick (includes graphic effect)
+                players[nextPlayer].playCard(trick); // transfer to trick (includes graphic effect)
                 System.out.println("winning: " + winningCard);
                 System.out.println(" played: " + selected);
                 // System.out.println("winning: suit = " + winningCard.getSuit() + ", rank = " + (13 - winningCard.getRankId()));
