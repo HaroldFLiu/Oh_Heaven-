@@ -39,8 +39,8 @@ public class GameManager extends CardGame
 
     private final GraphicsManager graphics = new GraphicsManager();
 
-    public static void setSeed(int seed) {
-        RandomHandler.getInstance().setSeed(seed);
+    public void setSeed(int seed) {
+        RandomHandler.getInstance().setRandom(seed, nbPlayers);
     }
 
     private void setProperties()
@@ -174,7 +174,7 @@ public class GameManager extends CardGame
         int winner;
         Card winningCard;
         Suit lead;
-        int nextPlayer = RandomHandler.getInstance().getRandom().nextInt(nbPlayers); // randomly select player to lead for this round
+        int nextPlayer = RandomHandler.getInstance().getRandomPlayerNumber(); // randomly select player to lead for this round
         initBids(nextPlayer);
 
         for (int i = 0; i < nbPlayers; i++)

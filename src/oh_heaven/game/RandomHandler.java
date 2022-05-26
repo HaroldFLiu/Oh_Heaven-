@@ -10,6 +10,7 @@ public class RandomHandler
     private static final RandomHandler instance = new RandomHandler();
 
     private Random random;
+    private int nbPlayers;
 
     private RandomHandler()
     {
@@ -21,9 +22,10 @@ public class RandomHandler
         return instance;
     }
 
-    public void setSeed(int seed)
+    public void setRandom(int seed, int nbPlayers)
     {
         random = new Random(seed);
+        this.nbPlayers = nbPlayers;
     }
 
     public <T extends Enum<?>> T randomEnum(Class<T> clazz)
@@ -49,5 +51,10 @@ public class RandomHandler
     public Random getRandom()
     {
         return random;
+    }
+
+    public int getRandomPlayerNumber()
+    {
+        return random.nextInt(nbPlayers);
     }
 }
