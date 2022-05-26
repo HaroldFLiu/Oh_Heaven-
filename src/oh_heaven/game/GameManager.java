@@ -173,7 +173,7 @@ public class GameManager extends CardGame
         // graphics
         RowLayout[] layouts = new RowLayout[nbPlayers];
         for (int i = 0; i < nbPlayers; i++) {
-            layouts[i] = graphics.getLayout(this, players[i].getHand(), i);
+            layouts[i] = graphics.getLayout(this, players[i]);
         }
 //	    for (int i = 1; i < nbPlayers; i++) // This code can be used to visually hide the cards in a hand (make them face down)
 //	      hands[i].setVerso(true);			// You do not need to use or change this code.

@@ -50,14 +50,14 @@ public class GraphicsManager
     }
 
     // todo CHANGE TO PLAYER INSTEAD OF INTEGER
-    public RowLayout getLayout(CardGame game, Hand hand, int player)
+    public RowLayout getLayout(CardGame game, Player player)
     {
-        RowLayout layout = new RowLayout(handLocations[player], this.handWidth);
-        layout.setRotationAngle(90 * player);
+        RowLayout layout = new RowLayout(handLocations[player.getPlayerNumber()], this.handWidth);
+        layout.setRotationAngle(90 * player.getPlayerNumber());
 
-        hand.setView(game, layout);
-        hand.setTargetArea(new TargetArea(trickLocation));
-        hand.draw();
+        player.getHand().setView(game, layout);
+        player.getHand().setTargetArea(new TargetArea(trickLocation));
+        player.getHand().draw();
         return layout;
     }
 
