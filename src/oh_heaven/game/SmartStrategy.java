@@ -36,8 +36,8 @@ public class SmartStrategy implements BotStrategy{
     }
 
     @Override
-    public Card follow(Hand hand, Suit trumps, Hand trick, int current_bid, int target_bid, Card lead) {
-        Suit leadSuit = (Suit) lead.getSuit();
+    public Card follow(Hand hand, Suit trumps, Hand trick, int current_bid, int target_bid) {
+        Suit leadSuit = (Suit) trick.getFirst().getSuit();
 
         // if no card of lead suit try playing best card
         if (hand.getNumberOfCardsWithSuit(leadSuit) == 0) {

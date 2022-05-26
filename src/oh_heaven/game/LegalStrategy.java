@@ -17,9 +17,9 @@ public class LegalStrategy implements BotStrategy{
     }
 
     @Override
-    public Card follow(Hand hand, Suit trumps, Hand trick, int current_bid, int target_bid, Card lead) {
+    public Card follow(Hand hand, Suit trumps, Hand trick, int current_bid, int target_bid) {
         int x;
-        Suit leadSuit = (Suit) lead.getSuit();
+        Suit leadSuit = (Suit) trick.getFirst().getSuit();
         while (true) {
             x = random.nextInt(hand.getNumberOfCards());
             if (hand.getNumberOfCardsWithSuit(leadSuit) == 0)

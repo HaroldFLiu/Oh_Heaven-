@@ -1,7 +1,6 @@
 package oh_heaven.game.Player;
-import oh_heaven.game.*;
 import ch.aplu.jcardgame.*;
-import java.util.*;
+import oh_heaven.game.Suit;
 
 import java.util.Random;
 
@@ -42,5 +41,15 @@ public class Human extends Player {
         game.setStatusText("Player 0 double-click on card to lead.");
         while (null == this.selected) game.delay(100);
         return this.selected;
+    }
+
+    @Override
+    public Card lead(CardGame game, Suit trumps) {
+        return selectCard(game);
+    }
+
+    @Override
+    public Card follow(CardGame game, Suit trumps, Hand trick) {
+        return selectCard(game);
     }
 }

@@ -10,7 +10,7 @@ import oh_heaven.game.Player.*;
 public class GameManager extends CardGame
 {
     private static int seed = 30006;
-    private static Random random = new Random(seed);
+    protected static Random random = new Random(seed);
 
     // return random Enum value
     public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
@@ -88,10 +88,8 @@ public class GameManager extends CardGame
 
     private void createPlayers()
     {
-        human = new Human();
-        players[0] = human;
-        for (int i = 1; i < nbPlayers; i++)
-            players[i] = new Bot();
+        for (int i = 0; i < nbPlayers; i++)
+            players[i] = PlayerFactory.getPlayer(PropertiesLoader.getPlayer(i));
     }
     private void startGame()
     {
@@ -169,7 +167,11 @@ public class GameManager extends CardGame
             players[i].getHand().sort(Hand.SortType.SUITPRIORITY, true);
         }
         // Set up human player for interaction
-        human.makeCardListener();
+        for (Player i:players) {
+            if (i instanceof Human)
+                ((Human) i).makeCardListener();
+        }
+        //human.makeCardListener();
         // graphics
         RowLayout[] layouts = new RowLayout[nbPlayers];
         for (int i = 0; i < nbPlayers; i++) {
@@ -215,7 +217,7 @@ public class GameManager extends CardGame
 
         for (int i = 0; i < nbStartCards; i++) {
             trick = new Hand(deck);
-            selected = players[nextPlayer].selectCard(this);
+            selected = players[nextPlayer].lead(this,trumps);
             // Lead with selected card
             graphics.setTrickView(this, trick, selected);
             // No restrictions on the card being lead
@@ -227,7 +229,7 @@ public class GameManager extends CardGame
 
             for (int j = 1; j < nbPlayers; j++) {
                 if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
-                selected = players[nextPlayer].selectCard(this);
+                selected = players[nextPlayer].follow(this,trumps,trick);
 
                 // Follow with selected card
                 graphics.setTrickView(this, trick, selected);

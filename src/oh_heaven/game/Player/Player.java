@@ -1,5 +1,7 @@
 package oh_heaven.game.Player;
 import ch.aplu.jcardgame.*;
+import oh_heaven.game.Suit;
+
 import java.util.*;
 
 public abstract class Player
@@ -74,4 +76,7 @@ public abstract class Player
     {
         return bid;
     }
+
+    public abstract Card lead(CardGame game, Suit trumps);
+    public abstract Card follow(CardGame game, Suit trumps, Hand trick);
 }

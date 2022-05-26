@@ -63,5 +63,6 @@ public class PropertiesLoader {
     {
         return Boolean.parseBoolean(properties.getProperty("enforceRules"));
     }
+    public static String getPlayer(int i) { return properties.getProperty("players."+ String.valueOf(i));}
 }
 

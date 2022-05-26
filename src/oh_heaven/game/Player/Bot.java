@@ -6,10 +6,12 @@ import java.util.*;
 public class Bot extends Player
 {
     private static final int thinkingTime = 2000;
+    private final BotStrategy strategy;
 
-    public Bot()
+    public Bot(BotStrategy strategy)
     {
         super();
+        this.strategy = strategy;
     }
 
     @Override
@@ -37,6 +39,21 @@ public class Bot extends Player
         game.delay(thinkingTime);
         this.selected = GameManager.randomCard(this.getHand());
 
-        return this.selected;
+        return null;
     }
+
+    @Override
+    public Card lead(CardGame game, Suit trumps) {
+        game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
+        game.delay(thinkingTime);
+        return strategy.lead(this.getHand(),trumps,this.getTricks(), this.getBid());
+    }
+
+    @Override
+    public Card follow(CardGame game, Suit trumps, Hand trick) {
+        game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
+        game.delay(thinkingTime);
+        return strategy.follow(this.getHand(),trumps,trick,this.getBid(),this.getBid());
+    }
+
 }
