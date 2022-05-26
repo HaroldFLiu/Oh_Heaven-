@@ -251,11 +251,10 @@ public class GameManager extends CardGame
             winningCard = selected;
             // End Lead
 
-
             for (int j = 1; j < nbPlayers; j++) {
                 if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
                 selected = null;
-                // if (false) {
+
                 if (0 == nextPlayer) {
                     hands[0].setTouchEnabled(true);
                     setStatusText("Player 0 double-click on card to follow.");
@@ -265,23 +264,11 @@ public class GameManager extends CardGame
                     delay(thinkingTime);
                     selected = randomCard(hands[nextPlayer]);
                 }
+
                 // Follow with selected card
                 graphics.setTrickView(this, trick, selected);
                 // Check: Following card must follow suit if possible
                 ruleViolationCheck(lead, nextPlayer);
-//                if (selected.getSuit() != lead && hands[nextPlayer].getNumberOfCardsWithSuit(lead) > 0) {
-//                    // Rule violation
-//                    String violation = "Follow rule broken by player " + nextPlayer + " attempting to play " + selected;
-//                    System.out.println(violation);
-//                    if (enforceRules)
-//                        try {
-//                            throw(new BrokeRuleException(violation));
-//                        } catch (BrokeRuleException e) {
-//                            e.printStackTrace();
-//                            System.out.println("A cheating player spoiled the game!");
-//                            System.exit(0);
-//                        }
-//                }
                 // End Check
 
                 selected.transfer(trick, true); // transfer to trick (includes graphic effect)
