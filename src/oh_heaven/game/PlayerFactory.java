@@ -20,16 +20,16 @@ public class PlayerFactory {
             return getRandom();
         }
     }
-    public static Human getHuman() {
+    private static Human getHuman() {
         return new Human();
     }
-    public static Bot getLegal() {
+    private static Bot getLegal() {
         return new Bot(new LegalStrategy(GameManager.random));
     }
-    public static Bot getSmart() {
+    private static Bot getSmart() {
         return new Bot(new SmartStrategy(GameManager.random));
     }
-    public static Bot getRandom() {
+    private static Bot getRandom() {
         return new Bot(new RandomStrategy());
     }
 }
