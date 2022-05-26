@@ -51,9 +51,7 @@ public class GameManager extends CardGame
     public final int nbPlayers = 4;
     private int nbStartCards = 13;
     private int nbRounds = 3;
-    public final int madeBidBonus = 10;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
-    private final int thinkingTime = 2000;
     private boolean enforceRules=false;
 
     private Player[] players = new Player[nbPlayers];
@@ -66,24 +64,12 @@ public class GameManager extends CardGame
         GameManager.random = new Random(seed);
     }
 
-    public void setEnforceRules(boolean enforceRules) {
-        this.enforceRules = enforceRules;
-    }
-
-    public void setNbStartCards(int nbStartCards) {
-        this.nbStartCards = nbStartCards;
-    }
-
-    public void setNbRounds(int nbRounds) {
-        this.nbRounds = nbRounds;
-    }
-
     private void setProperties()
     {
-        this.setNbRounds(PropertiesLoader.getNbRounds());
-        this.setNbStartCards(PropertiesLoader.getNbStartCards());
+        nbRounds = PropertiesLoader.getNbRounds();
+        nbStartCards = PropertiesLoader.getNbStartCards();
+        enforceRules = PropertiesLoader.getEnforceRules();
         this.setSeed(PropertiesLoader.getSeed());
-        this.setEnforceRules(PropertiesLoader.getEnforceRules());
     }
 
     private void createPlayers()
@@ -222,7 +208,7 @@ public class GameManager extends CardGame
             graphics.setTrickView(this, trick, selected);
             // No restrictions on the card being lead
             lead = (Suit) selected.getSuit();
-            selected.transfer(trick, true); // transfer to trick (includes graphic effect)
+            players[nextPlayer].playCard(trick);
             winner = nextPlayer;
             winningCard = selected;
             // End Lead
@@ -237,7 +223,7 @@ public class GameManager extends CardGame
                 ruleViolationCheck(lead, nextPlayer);
                 // End Check
 
-                selected.transfer(trick, true); // transfer to trick (includes graphic effect)
+                players[nextPlayer].playCard(trick); // transfer to trick (includes graphic effect)
                 System.out.println("winning: " + winningCard);
                 System.out.println(" played: " + selected);
                 // System.out.println("winning: suit = " + winningCard.getSuit() + ", rank = " + (13 - winningCard.getRankId()));
