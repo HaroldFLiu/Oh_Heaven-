@@ -1,17 +1,18 @@
 package oh_heaven.game.Player;
 import ch.aplu.jcardgame.*;
+import java.util.*;
 
 public abstract class Player
 {
     private static final int madeBidBonus = 10;
     private static int playerCount = 0;
 
-    private Card selected;
+    protected Card selected;
 
     private Hand hand;
     private int playerScore;
     private int tricksWon;
-    private int bid;
+    protected int bid;
     private int playerNumber;
 
     public Player()
@@ -32,12 +33,15 @@ public abstract class Player
             playerScore += madeBidBonus;
     }
 
-    public abstract int makeBid(boolean lastBid, int previousBids, int nbStartCards);
+    public abstract int makeBid(boolean lastBid, int previousBids, int nbStartCards, Random random);
 
-    public abstract void selectCard();
+    public abstract void selectCard(CardGame game);
 
     // TODO CHANGE TO TRICK CLASS
-    public abstract void playCard();
+    public void playCard(Hand trick)
+    {
+        selected.transfer(trick, true);
+    }
 
     public void winTrick()
     {
@@ -47,5 +51,10 @@ public abstract class Player
     public Hand getHand()
     {
         return hand;
+    }
+
+    public int getPlayerNumber()
+    {
+        return playerNumber;
     }
 }
