@@ -91,6 +91,19 @@ public class GameManager extends CardGame
         graphics.initScoreGraphics(this, nbPlayers, scores, tricks, bids);
     }
 
+    private void runGame()
+    {
+        for (int i=0; i <nbRounds; i++) {
+            initTricks();
+            initRound();
+            playRound();
+            updateScores();
+        };
+
+        for (int i=0; i <nbPlayers; i++)
+            graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
+    }
+
     private void updateScores() {
         for (int i = 0; i < nbPlayers; i++) {
             scores[i] += tricks[i];
@@ -249,17 +262,11 @@ public class GameManager extends CardGame
         this.setNbStartCards(PropertiesLoader.getNbStartCards());
         this.setSeed(PropertiesLoader.getSeed());
         this.setEnforceRules(PropertiesLoader.getEnforceRules());
-        
+
         startGame();
 
-        for (int i=0; i <nbRounds; i++) {
-            initTricks();
-            initRound();
-            playRound();
-            updateScores();
-        };
-        for (int i=0; i <nbPlayers; i++)
-            graphics.updateScoreGraphics(this, i, scores[i], tricks[i], bids[i]);
+        runGame();
+
         int maxScore = 0;
         for (int i = 0; i <nbPlayers; i++) if (scores[i] > maxScore) maxScore = scores[i];
         Set <Integer> winners = new HashSet<Integer>();
