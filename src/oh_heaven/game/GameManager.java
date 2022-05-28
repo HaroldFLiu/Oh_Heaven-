@@ -39,7 +39,7 @@ public class GameManager extends CardGame
         setSeed(PropertiesLoader.getSeed());
     }
 
-    public void setSeed(int seed) {
+    private void setSeed(int seed) {
         RandomHandler.getInstance().setRandomSeed(seed);
     }
 
