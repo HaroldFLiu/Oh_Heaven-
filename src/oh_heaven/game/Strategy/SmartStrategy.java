@@ -40,9 +40,9 @@ public class SmartStrategy implements BotStrategy
         Card cardToPlay = null;
 
         for (Card card : getValidCards(hand, leadSuit, noLeadingSuit))
-            if (cardToPlay == null || isPreferredCard(card, cardToPlay, trumps, tryingToWinTrick, noLeadingSuit))
+            if (isPreferredCard(card, cardToPlay, trumps, tryingToWinTrick, noLeadingSuit))
                 cardToPlay = card;
-        
+
         return cardToPlay;
     }
 
