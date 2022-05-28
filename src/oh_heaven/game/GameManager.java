@@ -32,7 +32,7 @@ public class GameManager extends CardGame
 
     private void setProperties()
     {
-        nbRounds = 1; // PropertiesLoader.getNbRounds();
+        nbRounds = PropertiesLoader.getNbRounds();
         nbStartCards = PropertiesLoader.getNbStartCards();
         boolean enforceRules = PropertiesLoader.getEnforceRules();
         trick = new Trick(enforceRules);
