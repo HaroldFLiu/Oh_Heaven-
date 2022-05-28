@@ -138,7 +138,7 @@ public class GameManager extends CardGame
             if (i instanceof Human)
                 ((Human) i).makeCardListener();
         }
-        
+
         RowLayout[] layouts = new RowLayout[nbPlayers];
         for (int i = 0; i < nbPlayers; i++) {
             layouts[i] = graphics.getLayout(this, players[i]);

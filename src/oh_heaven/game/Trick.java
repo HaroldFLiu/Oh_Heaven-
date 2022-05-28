@@ -10,7 +10,6 @@ public class Trick
     private Suit currentSuit;
 
     private Suit trumpSuit;
-    private Actor trumpActor;
 
     private Player winner;
     private Card winningCard;
