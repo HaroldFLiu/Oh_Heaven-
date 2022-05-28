@@ -38,8 +38,6 @@ public class GraphicsManager
 
     private final String version = "1.0";
 
-    public GraphicsManager() {}
-
     public Actor displayTrumpSuit(CardGame game, Suit trump)
     {
         Actor trumpActor = new Actor("sprites/" + trumpImage[trump.ordinal()]);

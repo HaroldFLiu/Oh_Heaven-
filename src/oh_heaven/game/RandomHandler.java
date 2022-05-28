@@ -12,11 +12,6 @@ public class RandomHandler
 
     private Random random;
 
-    private RandomHandler()
-    {
-
-    }
-
     public static RandomHandler getInstance()
     {
         return instance;
