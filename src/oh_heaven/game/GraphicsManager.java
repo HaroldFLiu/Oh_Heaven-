@@ -40,50 +40,48 @@ public class GraphicsManager
 
     public GraphicsManager() {}
 
-    public Actor setTrumpGraphics(CardGame game, Suit trump)
+    public Actor displayTrumpSuit(CardGame game, Suit trump)
     {
         Actor trumpActor = new Actor("sprites/" + trumpImage[trump.ordinal()]);
         game.addActor(trumpActor, trumpLocation);
         return trumpActor;
     }
 
-    // todo CHANGE TO PLAYER INSTEAD OF INTEGER
-    public RowLayout getLayout(CardGame game, Player player)
+    public void setHandLayout(CardGame game, Player player)
     {
-        RowLayout layout = new RowLayout(handLocations[player.getPlayerNumber()], this.handWidth);
-        layout.setRotationAngle(90 * player.getPlayerNumber());
+        RowLayout handLayout = new RowLayout(handLocations[player.getPlayerNumber()], this.handWidth);
+        handLayout.setRotationAngle(90 * player.getPlayerNumber());
 
-        player.getHand().setView(game, layout);
-        player.getHand().setTargetArea(new TargetArea(trickLocation));
-        player.getHand().draw();
-        return layout;
+        Hand playerHand = player.getHand();
+        playerHand.setView(game, handLayout);
+        playerHand.setTargetArea(new TargetArea(trickLocation));
+        playerHand.draw();
     }
 
-    public void setTrickView(CardGame game, Hand trick, Card selected)
+    public void updateTrickDisplay(CardGame game, Hand trick, Card selected)
     {
         trick.setView(game, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
         trick.draw();
         selected.setVerso(false);
     }
 
-    private void setScore(CardGame game, Player player)
+    private void setPlayerScore(CardGame game, Player player)
     {
         String text = "[" + String.valueOf(player.getScore()) + "]" + String.valueOf(player.getTricks()) + "/" + String.valueOf(player.getBid());
         scoreActors[player.getPlayerNumber()] = new TextActor(text, Color.WHITE, game.bgColor, bigFont);
         game.addActor(scoreActors[player.getPlayerNumber()], scoreLocations[player.getPlayerNumber()]);
     }
 
-    //TODO MAKE THIS WORK WITH PLAYERS INSTEAD
-    public void initScoreGraphics(CardGame game, Player[] players)
+    public void initPlayerScoreGraphics(CardGame game, Player[] players)
     {
         for (Player p : players)
-            setScore(game, p);
+            setPlayerScore(game, p);
     }
 
-    public void updateScoreGraphics(CardGame game, Player player)
+    public void updatePlayerScore(CardGame game, Player player)
     {
         game.removeActor(scoreActors[player.getPlayerNumber()]);
-        setScore(game, player);
+        setPlayerScore(game, player);
     }
 
     public void addGameOverText(CardGame game)

@@ -50,7 +50,7 @@ public class GameManager extends CardGame
 
         this.createPlayers();
 
-        graphics.initScoreGraphics(this, players);
+        graphics.initPlayerScoreGraphics(this, players);
     }
 
     private void createPlayers()
@@ -67,8 +67,8 @@ public class GameManager extends CardGame
             updateScores();
         }
 
-        for (int i=0; i <nbPlayers; i++)
-            graphics.updateScoreGraphics(this, players[i]);
+        for (Player player : players)
+            graphics.updatePlayerScore(this, player);
     }
 
     private void startRound() {
@@ -107,24 +107,22 @@ public class GameManager extends CardGame
 
     private void setPlayerHandLayouts()
     {
-        RowLayout[] layouts = new RowLayout[nbPlayers];
-
-        for (int i = 0; i < nbPlayers; i++)
-            layouts[i] = graphics.getLayout(this, players[i]);
+        for (Player player : players)
+            graphics.setHandLayout(this, player);
     }
 
     private void playRound()
     {
         // Select and display the trump suit
-        Actor trumpsActor = graphics.setTrumpGraphics(this, trick.newGame());
+        Actor trumpsActor = graphics.displayTrumpSuit(this, trick.newGame());
 
         Player startingPlayer = RandomHandler.getInstance().getRandomPlayer(players);
         makeBids(startingPlayer);
 
         Player currentPlayer = startingPlayer;
 
-        for (int i = 0; i < nbPlayers; i++)
-            graphics.updateScoreGraphics(this, players[i]);
+        for (Player player : players)
+            graphics.updatePlayerScore(this, player);
 
         for (int i = 0; i < nbStartCards; i++)
         {
@@ -133,7 +131,7 @@ public class GameManager extends CardGame
             for (int j = 0; j < nbPlayers; j++)
             {
                 Card cardPlayed = trick.playCard(this, currentPlayer);
-                graphics.setTrickView(this, trick.getTrickHand(), cardPlayed);
+                graphics.updateTrickDisplay(this, trick.getTrickHand(), cardPlayed);
 
                 // Winner gets updated if it isn't the first card played
                 if (j != 0)
@@ -171,7 +169,7 @@ public class GameManager extends CardGame
         Player winner = trick.getWinner();
         setStatusText("Player " + winner.getPlayerNumber() + " wins trick.");
         winner.winTrick();
-        graphics.updateScoreGraphics(this, winner);
+        graphics.updatePlayerScore(this, winner);
     }
 
     private void updateScores()
