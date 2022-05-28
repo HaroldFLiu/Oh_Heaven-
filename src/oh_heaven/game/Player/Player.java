@@ -39,7 +39,7 @@ public abstract class Player
 
     public abstract int makeBid(boolean lastBid, int previousBids, int nbStartCards);
 
-    public abstract Card selectCard(CardGame game);
+    public abstract Card selectCard(CardGame game, Suit trumps, Hand trick);
 
     // TODO CHANGE TO TRICK CLASS
     public void playCard(Hand trick, Card selected)
@@ -76,9 +76,6 @@ public abstract class Player
     {
         return bid;
     }
-
-    public abstract Card lead(CardGame game, Suit trumps);
-    public abstract Card follow(CardGame game, Suit trumps, Hand trick);
 
     public void sortHand()
     {

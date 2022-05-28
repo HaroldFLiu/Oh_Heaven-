@@ -3,8 +3,7 @@ package oh_heaven.game;
 import oh_heaven.game.Player.Bot;
 import oh_heaven.game.Player.Human;
 import oh_heaven.game.Player.Player;
-
-import java.util.Random;
+import oh_heaven.game.Strategy.*;
 
 public class PlayerFactory {
     public static Player getPlayer(String str) {

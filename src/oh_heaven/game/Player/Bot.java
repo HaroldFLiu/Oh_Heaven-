@@ -1,6 +1,7 @@
 package oh_heaven.game.Player;
 import oh_heaven.game.*;
 import ch.aplu.jcardgame.*;
+import oh_heaven.game.Strategy.*;
 
 public class Bot extends Player
 {
@@ -32,27 +33,11 @@ public class Bot extends Player
     }
 
     @Override
-    public Card selectCard(CardGame game)
+    public Card selectCard(CardGame game, Suit trumps, Hand trick)
     {
         game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
         game.delay(thinkingTime);
-        this.selected = RandomHandler.getInstance().randomCard(this.getHand());
-
-        return null;
+        return trick.isEmpty() ? strategy.playFirstCard(getHand(), trumps, getTricks(), getBid())
+                : strategy.playSubsequentCard(getHand(),trumps,trick,getBid(),getBid());
     }
-
-    @Override
-    public Card lead(CardGame game, Suit trumps) {
-        game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
-        game.delay(thinkingTime);
-        return strategy.lead(this.getHand(),trumps,this.getTricks(), this.getBid());
-    }
-
-    @Override
-    public Card follow(CardGame game, Suit trumps, Hand trick) {
-        game.setStatusText("Player " + this.getPlayerNumber() + " thinking...");
-        game.delay(thinkingTime);
-        return strategy.follow(this.getHand(),trumps,trick,this.getBid(),this.getBid());
-    }
-
 }

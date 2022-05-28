@@ -17,7 +17,7 @@ public class RandomHandler
         return instance;
     }
 
-    public void setRandom(int seed)
+    public void setRandomSeed(int seed)
     {
         random = new Random(seed);
     }
@@ -29,10 +29,10 @@ public class RandomHandler
     }
 
     // return random Card from Hand
-    public Card randomCard(Hand hand)
+    public Card getRandomCard(Hand hand)
     {
-        int x = random.nextInt(hand.getNumberOfCards());
-        return hand.get(x);
+        int card = random.nextInt(hand.getNumberOfCards());
+        return hand.get(card);
     }
 
     public Random getRandom()

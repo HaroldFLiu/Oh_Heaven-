@@ -40,7 +40,7 @@ public class GameManager extends CardGame
     }
 
     public void setSeed(int seed) {
-        RandomHandler.getInstance().setRandom(seed);
+        RandomHandler.getInstance().setRandomSeed(seed);
     }
 
     private void startGame()
@@ -98,7 +98,7 @@ public class GameManager extends CardGame
                 if (pack.isEmpty())
                     return;
 
-                Card dealt = RandomHandler.getInstance().randomCard(pack);
+                Card dealt = RandomHandler.getInstance().getRandomCard(pack);
                 dealt.removeFromHand(false);
                 player.getHand().insert(dealt, false);
             }

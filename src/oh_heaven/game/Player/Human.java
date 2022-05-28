@@ -1,6 +1,7 @@
 package oh_heaven.game.Player;
 import ch.aplu.jcardgame.*;
 import oh_heaven.game.RandomHandler;
+import oh_heaven.game.Rank;
 import oh_heaven.game.Suit;
 
 public class Human extends Player {
@@ -32,7 +33,7 @@ public class Human extends Player {
     }
 
     @Override
-    public Card selectCard(CardGame game)
+    public Card selectCard(CardGame game, Suit trumps, Hand trick)
     {
         this.selected = null;
 
@@ -40,15 +41,5 @@ public class Human extends Player {
         game.setStatusText("Player " + getPlayerNumber() + " double-click on card to lead.");
         while (null == this.selected) game.delay(100);
         return this.selected;
-    }
-
-    @Override
-    public Card lead(CardGame game, Suit trumps) {
-        return selectCard(game);
-    }
-
-    @Override
-    public Card follow(CardGame game, Suit trumps, Hand trick) {
-        return selectCard(game);
     }
 }

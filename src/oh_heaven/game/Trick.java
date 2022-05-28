@@ -1,7 +1,6 @@
 package oh_heaven.game;
 
 import ch.aplu.jcardgame.*;
-import ch.aplu.jgamegrid.*;
 import oh_heaven.game.Player.*;
 
 public class Trick
@@ -38,7 +37,7 @@ public class Trick
     {
         boolean isFirstCard = currentSuit == null;
 
-        cardPlayed = isFirstCard ? player.lead(game, trumpSuit) : player.follow(game, trumpSuit, getTrickHand());
+        cardPlayed = player.selectCard(game, trumpSuit, getTrickHand());
 
         if (isFirstCard)
         {
