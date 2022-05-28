@@ -79,4 +79,9 @@ public abstract class Player
 
     public abstract Card lead(CardGame game, Suit trumps);
     public abstract Card follow(CardGame game, Suit trumps, Hand trick);
+
+    public void sortHand()
+    {
+        hand.sort(Hand.SortType.SUITPRIORITY, true);
+    }
 }

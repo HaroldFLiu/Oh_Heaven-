@@ -32,7 +32,7 @@ public class GameManager extends CardGame
 
     private void setProperties()
     {
-        nbRounds = PropertiesLoader.getNbRounds();
+        nbRounds = 1; // PropertiesLoader.getNbRounds();
         nbStartCards = PropertiesLoader.getNbStartCards();
         boolean enforceRules = PropertiesLoader.getEnforceRules();
         trick = new Trick(enforceRules);
@@ -40,7 +40,7 @@ public class GameManager extends CardGame
     }
 
     public void setSeed(int seed) {
-        RandomHandler.getInstance().setRandom(seed, nbPlayers);
+        RandomHandler.getInstance().setRandom(seed);
     }
 
     private void startGame()
@@ -72,39 +72,45 @@ public class GameManager extends CardGame
     }
 
     private void startRound() {
-        for (int i = 0; i < nbPlayers; i++)
-            players[i].startRound(deck);
+        for (Player player : players)
+            player.startRound(deck);
 
         dealOutCards();
 
-        for (int i = 0; i < nbPlayers; i++) {
-            players[i].getHand().sort(Hand.SortType.SUITPRIORITY, true);
-        }
-        // Set up human player for interaction
-        for (Player i:players) {
-            if (i instanceof Human)
-                ((Human) i).makeCardListener();
+        for (Player player : players)
+        {
+            player.sortHand();
+
+            if (player instanceof Human)
+                ((Human) player).makeCardListener();
         }
 
-        RowLayout[] layouts = new RowLayout[nbPlayers];
-        for (int i = 0; i < nbPlayers; i++) {
-            layouts[i] = graphics.getLayout(this, players[i]);
-        }
+        setPlayerHandLayouts();
     }
 
     private void dealOutCards() {
         Hand pack = deck.toHand(false);
-        // pack.setView(Oh_Heaven.this, new RowLayout(hideLocation, 0));
-        for (int i = 0; i < nbStartCards; i++) {
-            for (int j=0; j < nbPlayers; j++) {
-                if (pack.isEmpty()) return;
+
+        for (int i = 0; i < nbStartCards; i++)
+        {
+            for (Player player : players)
+            {
+                if (pack.isEmpty())
+                    return;
+
                 Card dealt = RandomHandler.getInstance().randomCard(pack);
-                // System.out.println("Cards = " + dealt);
                 dealt.removeFromHand(false);
-                players[j].getHand().insert(dealt, false);
-                // dealt.transfer(hands[j], true);
+                player.getHand().insert(dealt, false);
             }
         }
+    }
+
+    private void setPlayerHandLayouts()
+    {
+        RowLayout[] layouts = new RowLayout[nbPlayers];
+
+        for (int i = 0; i < nbPlayers; i++)
+            layouts[i] = graphics.getLayout(this, players[i]);
     }
 
     private void playRound()
@@ -112,19 +118,20 @@ public class GameManager extends CardGame
         // Select and display the trump suit
         Actor trumpsActor = graphics.setTrumpGraphics(this, trick.newGame());
 
-        int nextPlayer = RandomHandler.getInstance().getRandomPlayerNumber(); // randomly select player to lead for this round
-        makeBids(nextPlayer);
+        Player startingPlayer = RandomHandler.getInstance().getRandomPlayer(players);
+        makeBids(startingPlayer);
+
+        Player currentPlayer = startingPlayer;
 
         for (int i = 0; i < nbPlayers; i++)
             graphics.updateScoreGraphics(this, players[i]);
 
         for (int i = 0; i < nbStartCards; i++)
         {
-            trick.newTrick(deck);
+            trick.startNewTrick(deck);
 
             for (int j = 0; j < nbPlayers; j++)
             {
-                Player currentPlayer = players[nextPlayer];
                 Card cardPlayed = trick.playCard(this, currentPlayer);
                 graphics.setTrickView(this, trick.getTrickHand(), cardPlayed);
 
@@ -132,8 +139,7 @@ public class GameManager extends CardGame
                 if (j != 0)
                     trick.updateWinner(currentPlayer);
 
-                if (++nextPlayer == nbPlayers)
-                    nextPlayer = 0;
+                currentPlayer = nextPlayer(currentPlayer);
             }
 
             endTrick();
@@ -142,14 +148,20 @@ public class GameManager extends CardGame
         removeActor(trumpsActor);
     }
 
-    private void makeBids(int nextPlayer) {
-        int total = 0;
+    private void makeBids(Player startingPlayer) {
+        int totalTricksBid = 0;
+        Player currentPlayer = startingPlayer;
 
-        for (int i = nextPlayer; i < nextPlayer + nbPlayers; i++)
+        for (int i = 1; i <= nbPlayers; i++)
         {
-            int iP = i % nbPlayers;
-            total += players[iP].makeBid(i+1 == nextPlayer + nbPlayers, total, nbStartCards);
+            totalTricksBid += currentPlayer.makeBid(i == nbPlayers, totalTricksBid, nbStartCards);
+            currentPlayer = nextPlayer(currentPlayer);
         }
+    }
+
+    private Player nextPlayer(Player player)
+    {
+        return players[(player.getPlayerNumber()+1)%nbPlayers];
     }
 
     private void endTrick()
@@ -162,35 +174,39 @@ public class GameManager extends CardGame
         graphics.updateScoreGraphics(this, winner);
     }
 
-    private void updateScores() {
-        for (int i = 0; i < nbPlayers; i++) {
-            players[i].updateScore();
-        }
+    private void updateScores()
+    {
+        for (Player player : players)
+            player.updateScore();
     }
 
     private void endGame()
     {
-        int maxScore = 0;
-        for (int i = 0; i <nbPlayers; i++)
-            maxScore = Math.max(maxScore, players[i].getScore());
-
-        HashSet<Integer> winners = new HashSet<Integer>();
-        for (int i = 0; i <nbPlayers; i++)
-            if (players[i].getScore() == maxScore)
-                winners.add(i);
+        HashSet<Integer> winners = findWinners();
 
         String winText;
-        if (winners.size() == 1) {
-            winText = "Game over. Winner is player: " +
-                    winners.iterator().next();
-        }
-        else {
-            winText = "Game Over. Drawn winners are players: " +
-                    String.join(", ", winners.stream().map(String::valueOf).collect(Collectors.toSet()));
-        }
+        if (winners.size() == 1)
+            winText = "Game over. Winner is player: " + winners.iterator().next();
+        else
+            winText = "Game Over. Drawn winners are players: "
+                    + String.join(", ", winners.stream().map(String::valueOf).collect(Collectors.toSet()));
 
         graphics.addGameOverText(this);
         setStatusText(winText);
         refresh();
+    }
+
+    private HashSet<Integer> findWinners()
+    {
+        int winningScore = 0;
+        for (Player player : players)
+            winningScore = Math.max(winningScore, player.getScore());
+
+        HashSet<Integer> winners = new HashSet<Integer>();
+        for (Player player : players)
+            if (player.getScore() == winningScore)
+                winners.add(player.getPlayerNumber());
+
+        return winners;
     }
 }

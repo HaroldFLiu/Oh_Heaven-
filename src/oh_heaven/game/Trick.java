@@ -28,7 +28,7 @@ public class Trick
         return trumpSuit;
     }
 
-    public void newTrick(Deck deck)
+    public void startNewTrick(Deck deck)
     {
         trickHand = new Hand(deck);
         currentSuit = null;

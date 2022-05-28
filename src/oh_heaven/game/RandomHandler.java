@@ -1,6 +1,7 @@
 package oh_heaven.game;
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
+import oh_heaven.game.Player.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +11,6 @@ public class RandomHandler
     private static final RandomHandler instance = new RandomHandler();
 
     private Random random;
-    private int nbPlayers;
 
     private RandomHandler()
     {
@@ -22,10 +22,9 @@ public class RandomHandler
         return instance;
     }
 
-    public void setRandom(int seed, int nbPlayers)
+    public void setRandom(int seed)
     {
         random = new Random(seed);
-        this.nbPlayers = nbPlayers;
     }
 
     public <T extends Enum<?>> T randomEnum(Class<T> clazz)
@@ -41,20 +40,13 @@ public class RandomHandler
         return hand.get(x);
     }
 
-    // return random Card from ArrayList
-    public Card randomCard(ArrayList<Card> list)
-    {
-        int x = random.nextInt(list.size());
-        return list.get(x);
-    }
-
     public Random getRandom()
     {
         return random;
     }
 
-    public int getRandomPlayerNumber()
+    public Player getRandomPlayer(Player[] players)
     {
-        return random.nextInt(nbPlayers);
+        return players[random.nextInt(players.length)];
     }
 }
