@@ -152,9 +152,11 @@ public class GameManager extends CardGame
 
         for (int i = 1; i <= nbPlayers; i++)
         {
-            totalTricksBid += currentPlayer.makeBid(i == nbPlayers, totalTricksBid, nbStartCards);
+            totalTricksBid += currentPlayer.makeBid(false, totalTricksBid, nbStartCards);
             currentPlayer = nextPlayer(currentPlayer);
         }
+
+        startingPlayer.makeBid(true, totalTricksBid, nbStartCards);
     }
 
     private Player nextPlayer(Player player)

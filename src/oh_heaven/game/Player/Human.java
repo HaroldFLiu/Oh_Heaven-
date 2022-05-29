@@ -22,11 +22,22 @@ public class Human extends Player {
     @Override
     public int makeBid(boolean lastBid, int previousBids, int nbStartCards)
     {
-        int bid = nbStartCards / 4 + RandomHandler.getInstance().getRandom().nextInt(2);
+        int bid = 0;
+        if (!lastBid)
+            bid = nbStartCards / 4 + RandomHandler.getInstance().getRandom().nextInt(2);
+        else if (previousBids == nbStartCards)
+        {
+            if (this.bid == 0)
+                this.bid = 1;
+            else
+                this.bid += RandomHandler.getInstance().getRandom().nextBoolean() ? -1 : 1;
 
-        // If total bids is equal to number of cards
-        if (lastBid && previousBids + bid == nbStartCards)
-            bid++;
+            return this.bid;
+        }
+        else
+        {
+            return 0;
+        }
 
         this.bid = bid;
         return bid;

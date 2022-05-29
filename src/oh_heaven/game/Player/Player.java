@@ -41,7 +41,6 @@ public abstract class Player
 
     public abstract Card selectCard(CardGame game, Suit trumps, Hand trick);
 
-    // TODO CHANGE TO TRICK CLASS
     public void playCard(Hand trick, Card selected)
     {
         selected.transfer(trick, true);

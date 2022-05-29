@@ -17,15 +17,21 @@ public class Bot extends Player
     @Override
     public int makeBid(boolean lastBid, int previousBids, int nbStartCards)
     {
-        int bid = nbStartCards / 4 + RandomHandler.getInstance().getRandom().nextInt(2);
-
-        // If total bids is equal to number of cards
-        if (lastBid && previousBids + bid == nbStartCards)
+        int bid = 0;
+        if (!lastBid)
+            bid = nbStartCards / 4 + RandomHandler.getInstance().getRandom().nextInt(2);
+        else if (previousBids == nbStartCards)
         {
-            if (bid == 0)
-                bid = 1;
+            if (this.bid == 0)
+                this.bid = 1;
             else
-                bid += RandomHandler.getInstance().getRandom().nextBoolean() ? -1 : 1;
+                this.bid += RandomHandler.getInstance().getRandom().nextBoolean() ? -1 : 1;
+
+            return this.bid;
+        }
+        else
+        {
+            return 0;
         }
 
         this.bid = bid;
