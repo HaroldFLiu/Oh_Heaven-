@@ -140,7 +140,7 @@ public class GameManager extends CardGame
                 currentPlayer = nextPlayer(currentPlayer);
             }
 
-            endTrick();
+            currentPlayer = endTrick();
         }
 
         removeActor(trumpsActor);
@@ -164,7 +164,7 @@ public class GameManager extends CardGame
         return players[(player.getPlayerNumber()+1)%nbPlayers];
     }
 
-    private void endTrick()
+    private Player endTrick()
     {
         delay(600);
         graphics.hideTrick(this, trick.getTrickHand());
@@ -172,6 +172,8 @@ public class GameManager extends CardGame
         setStatusText("Player " + winner.getPlayerNumber() + " wins trick.");
         winner.winTrick();
         graphics.updatePlayerScore(this, winner);
+
+        return winner;
     }
 
     private void updateScores()
