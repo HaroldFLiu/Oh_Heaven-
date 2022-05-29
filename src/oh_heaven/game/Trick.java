@@ -56,7 +56,7 @@ public class Trick
     private boolean newCardIsWinner() {
         return (cardPlayed.getSuit() == winningCard.getSuit() && cardPlayed.getRankId() < winningCard.getRankId()) ||
                 // trumped when non-trump was winning
-                (cardPlayed.getSuit() == trumpSuit && cardPlayed.getSuit() != trumpSuit);
+                (cardPlayed.getSuit() == trumpSuit && winningCard.getSuit() != trumpSuit);
     }
 
     public void updateWinner(Player player)
